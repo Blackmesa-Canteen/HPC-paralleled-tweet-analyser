@@ -1,5 +1,11 @@
 app:
-  step: 100
+  step: 100 # how many rows one languageCalculator will process
+  input-twitter-type: 0 # 0-tiny, 1-small, 2-big
+
+  grid-path: E:\projects\COMP90024_Assignment_1\sample\sydGrid.json
+  tiny-twitter-path: E:\projects\COMP90024_Assignment_1\sample\tinyTwitter.json
+  small-twitter-path: E:\projects\COMP90024_Assignment_1\sample\tinyTwitter.json
+  big-twitter-path: E:\projects\COMP90024_Assignment_1\sample\tinyTwitter.json
 
   thread-pool:
     size: 10
