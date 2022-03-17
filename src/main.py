@@ -3,6 +3,12 @@
 # Press Shift+F10 to execute it or replace it with your code.
 # Press Double Shift to search everywhere for classes, files, tool windows, actions, and settings.
 
+# 思路
+# rank_0 will perform as a master node to get results from COMM_WORLD and calc total values,
+# if all done, show final res on the screen
+
+# the other ranks will calc language separately, then send res to COMM_WORLD
+# other ranks need multi-thread?
 
 def print_hi(name):
     # Use a breakpoint in the code line below to debug your script.
