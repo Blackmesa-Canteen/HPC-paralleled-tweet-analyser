@@ -1,0 +1,5 @@
+app:
+  step: 100
+
+  thread-pool:
+    size: 10

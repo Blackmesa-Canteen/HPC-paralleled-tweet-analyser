@@ -1,0 +1,5 @@
+ijson: https://www.cnblogs.com/hexiaoqi/p/13040074.html
+ijson repo: https://github.com/ICRAR/ijson
+
+pyyaml: https://www.cnblogs.com/shengulong/p/10371740.html
+pyyaml: https://pyyaml.org/
