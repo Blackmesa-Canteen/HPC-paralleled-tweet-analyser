@@ -1,0 +1,142 @@
+[
+ {
+   "name": "English",
+   "subtag": "en"
+ },
+ {
+   "name": "Arabic",
+   "subtag": "ar"
+ },
+ {
+   "name": "Bengali",
+   "subtag": "bn"
+ },
+ {
+   "name": "Czech",
+   "subtag": "cs"
+ },
+ {
+   "name": "Danish",
+   "subtag": "da"
+ },
+ {
+   "name": "German",
+   "subtag": "de"
+ },
+ {
+   "name": "Greek",
+   "subtag": "el"
+ },
+ {
+   "name": "Spanish",
+   "subtag": "es"
+ },
+ {
+   "name": "Persian",
+   "subtag": "fa"
+ },
+ {
+   "name": "Finnish",
+   "subtag": "fi"
+ },
+ {
+   "name": "Filipino",
+   "subtag": "fil"
+ },
+ {
+   "name": "French",
+   "subtag": "fr"
+ },
+ {
+   "name": "Hebrew",
+   "subtag": "he"
+ },
+ {
+   "name": "Hindi",
+   "subtag": "hi"
+ },
+ {
+   "name": "Hungarian",
+   "subtag": "hu"
+ },
+ {
+   "name": "Indonesian",
+   "subtag": "id"
+ },
+ {
+   "name": "Italian",
+   "subtag": "it"
+ },
+ {
+   "name": "Japanese",
+   "subtag": "ja"
+ },
+ {
+   "name": "Korean",
+   "subtag": "ko"
+ },
+ {
+   "name": "Malay",
+   "subtag": "msa"
+ },
+ {
+   "name": "Dutch",
+   "subtag": "nl"
+ },
+ {
+   "name": "Norwegian",
+   "subtag": "no"
+ },
+ {
+   "name": "Polish",
+   "subtag": "pl"
+ },
+ {
+   "name": "Portuguese",
+   "subtag": "pt"
+ },
+ {
+   "name": "Romanian",
+   "subtag": "ro"
+ },
+ {
+   "name": "Russian",
+   "subtag": "ru"
+ },
+ {
+   "name": "Swedish",
+   "subtag": "sv"
+ },
+ {
+   "name": "Thai",
+   "subtag": "th"
+ },
+ {
+   "name": "Turkish",
+   "subtag": "tr"
+ },
+ {
+   "name": "Ukrainian",
+   "subtag": "uk"
+ },
+ {
+   "name": "Urdu",
+   "subtag": "ur"
+ },
+ {
+   "name": "Vietnamese",
+   "subtag": "vi"
+ },
+ {
+   "name": "Chinese",
+   "subtag": "zh-cn"
+ },
+ {
+   "name": "Chinese",
+   "subtag": "zh-tw"
+ },
+ {
+   "name": "undefined",
+   "subtag": "und"
+ }
+]
