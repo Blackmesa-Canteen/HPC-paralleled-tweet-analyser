@@ -10,6 +10,8 @@
 # the other ranks will calc language separately, then send res to COMM_WORLD
 # other ranks need multi-thread?
 
+# If there is only one rank here, run calc logic in rank_0.
+
 def print_hi(name):
     # Use a breakpoint in the code line below to debug your script.
     print(f'Hi, {name}')  # Press Ctrl+F8 to toggle the breakpoint.
