@@ -5,3 +5,6 @@ pyyaml: https://www.cnblogs.com/shengulong/p/10371740.html
 pyyaml: https://pyyaml.org/
 
 mpi4py在windows上的使用： https://zhuanlan.zhihu.com/p/157804393?from_voters_page=true
+
+singleton: https://zhuanlan.zhihu.com/p/37534850
+python regulation: https://www.jb51.net/article/143876.htm
