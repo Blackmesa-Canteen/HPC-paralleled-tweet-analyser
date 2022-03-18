@@ -8,4 +8,4 @@ app:
   big-twitter-path: E:\projects\COMP90024_Assignment_1\sample\tinyTwitter.json
 
   thread-pool:
-    size: 10
+    size: 2

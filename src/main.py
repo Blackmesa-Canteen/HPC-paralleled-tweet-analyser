@@ -11,6 +11,8 @@
 # other ranks need multi-thread?
 
 # If there is only one rank here, run calc logic in rank_0.
+import src.config.config_handler
+
 
 def print_hi(name):
     # Use a breakpoint in the code line below to debug your script.
@@ -20,5 +22,7 @@ def print_hi(name):
 # Press the green button in the gutter to run the script.
 if __name__ == '__main__':
     print_hi('PyCharm')
+    config_handler = src.config.config_handler.ConfigHandler()
+    print(config_handler.get_thread_pool_size())
 
 # See PyCharm help at https://www.jetbrains.com/help/pycharm/
