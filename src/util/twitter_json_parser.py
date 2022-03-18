@@ -34,10 +34,9 @@ class TwitterJsonParser:
         with open(self.__input_file_path, 'r', encoding='utf-8') as f:
             self.__total_rows = parse_total_rows(f)
 
-    # parse twitters start from specific start index
-    # the step is pre-defined in the config.yml!!
+    # parse twitters start from specific start index and within specific step
     # TODO: parse line logic
-    def parse_lines(self, start_index):
+    def parse_lines(self, start_index, step):
         pass
 
     def get_total_rows(self):
