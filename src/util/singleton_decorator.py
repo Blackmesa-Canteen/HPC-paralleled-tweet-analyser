@@ -1,3 +1,6 @@
+# author: Xiaotian Li
+# desc: Quick decorator for singleton pattern
+
 def singleton(cls, *args, **kw):
     __instance = {}
 
