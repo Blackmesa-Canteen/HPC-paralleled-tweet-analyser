@@ -1,3 +1,6 @@
+# author: Xiaotian Li
+# desc: get root path
+
 import sys
 import os
 
@@ -25,18 +28,12 @@ class PathUtil(object):
         # 替换斜杠
         self.__rootPath = self.__rootPath.replace("\\", "/")
 
-    def get_path_from_resources(self, file_name):
-        """按照文件名拼接资源文件路径"""
-        file_path = "%s/resources/%s" % (self.__rootPath, file_name)
-        return file_path
-
     def get_root_path(self):
         return self.__rootPath
 
 
-
 if __name__ == '__main__':
-    """测试"""
+    """test"""
     # path = PathUtil.getPathFromResources("context.ini")
     PathUtil = PathUtil()
     print(PathUtil.get_root_path())

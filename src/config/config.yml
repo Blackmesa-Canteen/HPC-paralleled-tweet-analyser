@@ -7,5 +7,8 @@ app:
   small-twitter-path: E:\projects\COMP90024_Assignment_1\sample\tinyTwitter.json
   big-twitter-path: E:\projects\COMP90024_Assignment_1\sample\tinyTwitter.json
 
+  grid-rows: 4
+  grid-columns: 4
+
   thread-pool:
     size: 2

@@ -23,6 +23,6 @@ def print_hi(name):
 if __name__ == '__main__':
     print_hi('PyCharm')
     config_handler = src.config.config_handler.ConfigHandler()
-    print(config_handler.get_thread_pool_size())
+    print(config_handler.get_grid_path())
 
 # See PyCharm help at https://www.jetbrains.com/help/pycharm/

@@ -43,6 +43,9 @@ class ConfigHandler:
                 else:
                     self.__input_twitter_type = InputTwitterType.TINY
 
+                self.__grid_rows = cfgs['app']['grid-rows']
+                self.__grid_columns = cfgs['app']['grid-columns']
+
                 print('[debug] loaded cfg, big_twitter_path is: ', self.__big_twitter_path)
 
         else:
@@ -54,13 +57,29 @@ class ConfigHandler:
             self.__small_twitter_path = '/data/projects/COMP90024/smallTwitter.json'
             self.__big_twitter_path = '/data/projects/COMP90024/bigTwitter.json'
             self.__thread_pool_size = 2
+            self.__grid_rows = 4
+            self.__grid_columns = 4
 
     # getters
+    def get_grid_rows(self):
+        return self.__grid_rows
+
+    def get_grid_columns(self):
+        return self.__grid_columns
+
     def get_step(self):
         return self.__step
 
     def get_input_twitter_type(self):
         return self.__input_twitter_type
+
+    def get_grid_path(self):
+        # check file exist or not
+        if not os.path.exists(self.__grid_path):
+            print("ERROR: sydGrid.json not exist, or config.yml is mistaken!")
+            sys.exit(-1)
+
+        return self.__grid_path
 
     # get the path of the twitter.json you need
     def get_twitter_path(self):
@@ -69,21 +88,21 @@ class ConfigHandler:
         if twitter_type == InputTwitterType.TINY:
             # check file exist or not
             if not os.path.exists(self.__tiny_twitter_path):
-                print("ERROR: tinyTwitter.json not exist!")
+                print("ERROR: tinyTwitter.json not exist, or config.yml is mistaken!")
                 sys.exit(-1)
 
             return self.__tiny_twitter_path
         elif twitter_type == InputTwitterType.SMALL:
             # check file exist or not
             if not os.path.exists(self.__small_twitter_path):
-                print("ERROR: smallTwitter.json not exist!")
+                print("ERROR: smallTwitter.json not exist, or config.yml is mistaken!")
                 sys.exit(-1)
 
             return self.__small_twitter_path
         else:
             # check file exist or not
             if not os.path.exists(self.__big_twitter_path):
-                print("ERROR: bigTwitter.json not exist!")
+                print("ERROR: bigTwitter.json not exist, or config.yml is mistaken!")
                 sys.exit(-1)
 
             return self.__big_twitter_path
