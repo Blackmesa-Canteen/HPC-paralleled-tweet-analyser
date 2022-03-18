@@ -14,6 +14,7 @@
 import src.config.config_handler
 from src.util.grid_json_parser import GridJsonParser
 from src.util.lang_tag_json_parser import LangTagJsonParser
+from src.util.twitter_json_parser import TwitterJsonParser
 
 
 def print_hi(name):
@@ -34,6 +35,10 @@ if __name__ == '__main__':
     print(grid_parser.get_all_grids())
     print(grid_parser.get_grid_by_name('B2'))
     print(grid_parser.get_grid_by_name('D4'))
+
+    twitter_json_parser = TwitterJsonParser()
+    print(twitter_json_parser.get_total_rows())
+
 
 
 # See PyCharm help at https://www.jetbrains.com/help/pycharm/
