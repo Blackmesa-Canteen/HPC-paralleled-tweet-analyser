@@ -43,7 +43,6 @@ class TwitterJsonParser:
     
     returns: [{'coordinates': [x, y], 'lang_tag': 'en'},{...},{...}, ...]
     '''
-
     def parse_valid_coordinate_lang_maps_in_range(self, start_index, step):
         upper_bound_index = self.__total_rows - 2
 
