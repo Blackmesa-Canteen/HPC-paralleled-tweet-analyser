@@ -2,6 +2,8 @@
 # desc: static tools for math/geo calc
 
 # Is the point in the outer rectangle
+
+# TODO: 这里是你可能会用到的一些数学、几何的静态函数
 def is_point_in_box(poi, sbox, toler=0.0001):
     # sbox=[[x1,y1],[x2,y2]]
     if sbox[0][0] <= poi[0] <= sbox[1][0] and sbox[0][1] <= poi[1] <= sbox[1][1]:

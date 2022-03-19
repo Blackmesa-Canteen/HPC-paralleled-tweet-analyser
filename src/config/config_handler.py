@@ -9,7 +9,7 @@ from src.util.path_util import PathUtil
 from src.util.singleton_decorator import singleton
 import yaml
 
-
+# TODO 这个对象你可能会用到，它存储了配置文件里的一些元数据，需要数据的时候，调用对应的Getter就好
 @singleton
 class ConfigHandler:
 
@@ -28,6 +28,9 @@ class ConfigHandler:
                 cfgs = yaml.safe_load(f)
 
                 self.__step = cfgs['app']['step']
+                if self.__step < 0:
+                    print('[ERR] config step is error!')
+                    sys.exit(-1)
 
                 self.__grid_path = cfgs['app']['grid-path']
                 self.__tiny_twitter_path = cfgs['app']['tiny-twitter-path']
@@ -40,11 +43,17 @@ class ConfigHandler:
                     self.__input_twitter_type = InputTwitterType.BIG
                 elif flag == 1:
                     self.__input_twitter_type = InputTwitterType.SMALL
-                else:
+                elif flag == 0:
                     self.__input_twitter_type = InputTwitterType.TINY
+                else:
+                    print('[ERR] config input-twitter-type is error!')
+                    sys.exit(-1)
 
                 self.__grid_rows = cfgs['app']['grid-rows']
                 self.__grid_columns = cfgs['app']['grid-columns']
+                if self.__grid_rows < 0 or self.__grid_columns < 0:
+                    print('[ERR] config grid columns/rows is error!')
+                    sys.exit(-1)
 
                 print('[debug] loaded cfg, big_twitter_path is: ', self.__big_twitter_path)
 

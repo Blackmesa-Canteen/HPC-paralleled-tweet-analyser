@@ -1,16 +1,5 @@
-# This is a sample Python script.
+# Here we will write main script with
 
-# Press Shift+F10 to execute it or replace it with your code.
-# Press Double Shift to search everywhere for classes, files, tool windows, actions, and settings.
-
-# 思路
-# rank_0 will perform as a master node to get results from COMM_WORLD and calc total values,
-# if all done, show final res on the screen
-
-# the other ranks will calc language separately, then send res to COMM_WORLD
-# other ranks need multi-thread?
-
-# If there is only one rank here, run calc logic in rank_0.
 import src.config.config_handler
 from src.util.grid_json_parser import GridJsonParser
 from src.util.lang_tag_json_parser import LangTagJsonParser
@@ -38,6 +27,7 @@ if __name__ == '__main__':
 
     twitter_json_parser = TwitterJsonParser()
     print(twitter_json_parser.get_total_rows())
+    print(twitter_json_parser.parse_valid_coordinate_lang_maps_in_range(start_index=0, step=500000000))
 
 
 

@@ -43,10 +43,12 @@ class GridJsonParser:
 
                     index += 1
 
+    # TODO 这是可以获得所有方格关键点坐标的函数
     # grids: {A1:[[x1,y1],[x2,y2]], B1:[[x1,y1],[x2,y2]], C1:[[x1,y1],[x2,y2]] }
     def get_all_grids(self):
         return self.__grids
 
+    # TODO 这是可以获得指定名字的方格的关键点坐标的函数
     # input grid name, like 'A1', then get A1's coordinate [[x1,y1],[x2,y2]]
     def get_grid_by_name(self, name):
         return self.__grids[name]

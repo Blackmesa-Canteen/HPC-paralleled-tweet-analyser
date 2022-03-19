@@ -8,3 +8,5 @@ mpi4py在windows上的使用： https://zhuanlan.zhihu.com/p/157804393?from_vote
 
 singleton: https://zhuanlan.zhihu.com/p/37534850
 python regulation: https://www.jb51.net/article/143876.htm
+
+tiny裏有coordinates的1212162687049883648和1212166639598395394
