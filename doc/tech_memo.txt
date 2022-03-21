@@ -10,3 +10,5 @@ singleton: https://zhuanlan.zhihu.com/p/37534850
 python regulation: https://www.jb51.net/article/143876.htm
 
 tiny裏有coordinates的1212162687049883648和1212166639598395394
+
+知乎， mpi4py使用： https://zhuanlan.zhihu.com/p/25332041
