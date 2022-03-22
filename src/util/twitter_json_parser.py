@@ -78,6 +78,7 @@ class TwitterJsonParser:
                     # move pointer to the requested line
                     if index < start_index:
                         objects.__next__()
+                        index += 1
                         continue
 
                     obj = objects.__next__()
