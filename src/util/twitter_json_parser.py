@@ -40,7 +40,7 @@ class TwitterJsonParser:
             self.__total_rows = parse_total_rows(f)
 
     # TODO 这是你可能会用到的实例方法，给定开始行和步长，从twitter文件中解析出坐标和 lang_tag的对象线程安全的队列
-    # 这个方法解析出来的队列用于单节点下的一个进程使用的， 可以多读一点。而配置文件里的step，是一个进程下每个线程在这个队列消费多少数据进行计算的数目。
+    # 这个方法解析出来的队列用于单节点下的一个进程使用的， 可以多读一点。而配置文件里的step， 是一个进程下每个线程在这个队列消费多少数据进行计算的数目。
     '''
     parse twitters start from specific start index and within specific step
     only parse out useful information as list of dicts
