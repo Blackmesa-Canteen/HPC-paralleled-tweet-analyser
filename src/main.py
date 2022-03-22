@@ -27,7 +27,12 @@ if __name__ == '__main__':
 
     twitter_json_parser = TwitterJsonParser()
     print(twitter_json_parser.get_total_rows())
-    print(twitter_json_parser.parse_valid_coordinate_lang_maps_in_range(start_index=0, step=500000000))
+
+    res_queue = twitter_json_parser.parse_valid_coordinate_lang_maps_in_range(start_index=200, step=500000000)
+
+    while not res_queue.empty():
+        print(res_queue.get())
+
 
 
 

@@ -1,5 +1,7 @@
 # author: Xiaotian Li
 # desc: util for parsing input twitter json file and store some meta data(Not all, otherwise will blow up memory)
+from queue import Queue
+
 import ijson
 
 from src.config.config_handler import ConfigHandler
@@ -24,6 +26,9 @@ def parse_total_rows(f):
 @singleton
 class TwitterJsonParser:
 
+    # A thread-safe queue to contain twitter info
+    __twitter_queue = Queue()
+
     def __init__(self):
         # get configuration
         config_handler = ConfigHandler()
@@ -34,14 +39,14 @@ class TwitterJsonParser:
         with open(self.__input_file_path, 'r', encoding='utf-8') as f:
             self.__total_rows = parse_total_rows(f)
 
-    # TODO 这是你可能会用到的实例方法，给定开始行和步长，从twitter文件中解析出坐标和 lang_tag的部分集合
+    # TODO 这是你可能会用到的实例方法，给定开始行和步长，从twitter文件中解析出坐标和 lang_tag的对象线程安全的队列
     '''
     parse twitters start from specific start index and within specific step
     only parse out useful information as list of dicts
     start from 0, Ends in (totalRows - 2), 1 line is for total_rows info
     useful info: doc.metadata.iso_language_code, doc.geo, doc.coordinates
     
-    returns: [{'coordinates': [x, y], 'lang_tag': 'en'},{...},{...}, ...]
+    returns: a thread-safe queue [{'coordinates': [x, y], 'lang_tag': 'en'},{...},{...}, ...]
     '''
     def parse_valid_coordinate_lang_maps_in_range(self, start_index, step):
         upper_bound_index = self.__total_rows - 2
@@ -68,14 +73,13 @@ class TwitterJsonParser:
         condition: 1.coordinate is not null
                    2. language tag is not null or und
         '''
-        res = []
         index = 0
         with open(self.__input_file_path, 'r', encoding='utf-8') as f:
             objects = ijson.items(f, 'rows.item')
             while index <= end_index:
                 try:
 
-                    # move pointer to the requested line
+                    # move pointer until get start_index
                     if index < start_index:
                         objects.__next__()
                         index += 1
@@ -95,17 +99,20 @@ class TwitterJsonParser:
                     if has_coordinate and has_correct_lang_tag:
                         point = coordinates['coordinates']
                         wrapper = {'coordinates': point, 'lang_tag': lang_tag}
-                        res.append(wrapper)
+                        self.__twitter_queue.put(wrapper)
 
                     index += 1
                 except StopIteration as e:
                     break
 
-        return res
+        return self.__twitter_queue
 
     # TODO 这是你可能会用到的实例方法，得到当前twitter文档的总行数
     def get_total_rows(self):
         return self.__total_rows
+
+    def get_twitter_queue(self):
+        return self.__twitter_queue
 
     def test_parse_coordinates(self):
         pass
