@@ -69,11 +69,17 @@ class TwitterJsonParser:
                    2. language tag is not null or und
         '''
         res = []
-        index = start_index
+        index = 0
         with open(self.__input_file_path, 'r', encoding='utf-8') as f:
             objects = ijson.items(f, 'rows.item')
             while index <= end_index:
                 try:
+
+                    # move pointer to the requested line
+                    if index < start_index:
+                        objects.__next__()
+                        continue
+
                     obj = objects.__next__()
 
                     coordinates = obj['doc']['coordinates']
