@@ -1,5 +1,7 @@
 # author: Xiaotian Li
 # desc: parse language tags from json and store them
+import os
+
 import ijson
 
 from src.util.path_util import PathUtil
@@ -13,7 +15,7 @@ class LangTagJsonParser:
         path_util = PathUtil()
         root_path = path_util.get_root_path()
 
-        lang_tag_json_path = root_path + "/src/langTag.json"
+        lang_tag_json_path = os.path.join(root_path, 'src', 'langTag.json')
         with open(lang_tag_json_path, 'r') as load_f:
             objects = ijson.items(load_f, 'item')
 

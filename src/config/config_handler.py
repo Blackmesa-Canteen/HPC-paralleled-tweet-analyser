@@ -21,7 +21,8 @@ class ConfigHandler:
         path_util = PathUtil()
         root_path = path_util.get_root_path()
 
-        config_file_path = root_path + '\src\config.yml'
+        config_file_path = os.path.join(root_path, 'src', 'config.yml')
+        print("[DEBUG] config path:", config_file_path)
 
         if os.path.exists(config_file_path):
             with open(config_file_path, 'r', encoding='utf-8') as f:
