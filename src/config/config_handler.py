@@ -28,6 +28,11 @@ class ConfigHandler:
             with open(config_file_path, 'r', encoding='utf-8') as f:
                 cfgs = yaml.safe_load(f)
 
+                self.__upper_bound_rows_per_iteration = cfgs['app']['upper-bound-rows-per-iteration']
+                if self.__upper_bound_rows_per_iteration < 0 or self.__upper_bound_rows_per_iteration > 1000000:
+                    print('[ERR] upper_bound_rows_per_iteration is error! too small or too big')
+                    sys.exit(-1)
+
                 self.__step = cfgs['app']['step']
                 if self.__step < 0:
                     print('[ERR] config step is error!')
@@ -60,13 +65,14 @@ class ConfigHandler:
 
         else:
             print('warning: config/config.yml not found, using default settings')
+            self.__upper_bound_rows_per_iteration = 10000
             self.__step = 100
             self.__input_twitter_type = InputTwitterType.TINY
             self.__grid_path = '/data/projects/COMP90024/sydGrid.json'
             self.__tiny_twitter_path = '/data/projects/COMP90024/tinyTwitter.json'
             self.__small_twitter_path = '/data/projects/COMP90024/smallTwitter.json'
             self.__big_twitter_path = '/data/projects/COMP90024/bigTwitter.json'
-            self.__thread_pool_size = 2
+            self.__thread_pool_size = 8
             self.__grid_rows = 4
             self.__grid_columns = 4
 
@@ -79,6 +85,9 @@ class ConfigHandler:
 
     def get_step(self):
         return self.__step
+
+    def get_upper_bound_rows_per_iteration(self):
+        return self.__upper_bound_rows_per_iteration
 
     def get_input_twitter_type(self):
         return self.__input_twitter_type

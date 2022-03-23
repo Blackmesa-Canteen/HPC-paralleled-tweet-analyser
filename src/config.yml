@@ -1,5 +1,10 @@
 app:
-  # how many rows one THREAD will process
+
+  # Max rows for one PROCESS read the file into memories each time
+  # useful when we meet a bigTwitter.json but there are only 2 process
+  upper-bound-rows-per-iteration: 10000
+
+  # how many rows one THREAD will process for calculation
   step: 100
 
   # decide to run which input file, 0-tiny, 1-small, 2-big
@@ -23,4 +28,4 @@ app:
   grid-columns: 4
 
   thread-pool:
-    size: 2
+    size: 8

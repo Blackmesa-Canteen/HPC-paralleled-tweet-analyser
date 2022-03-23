@@ -16,6 +16,7 @@ if __name__ == '__main__':
     print_hi('PyCharm')
     config_handler = src.config.config_handler.ConfigHandler()
     print(config_handler.get_grid_path(), " ", config_handler.get_grid_columns())
+    print('upper-bound-rows', config_handler.get_upper_bound_rows_per_iteration())
 
     lang_tag_parser = LangTagJsonParser()
     print(lang_tag_parser.get_tag_lang_map())
@@ -28,7 +29,7 @@ if __name__ == '__main__':
     twitter_json_parser = TwitterJsonParser()
     print(twitter_json_parser.get_total_rows())
 
-    res_queue = twitter_json_parser.parse_valid_coordinate_lang_maps_in_range(start_index=200, step=500000000)
+    res_queue = twitter_json_parser.parse_valid_coordinate_lang_maps_in_range(start_index=0, step=500000000)
 
     while not res_queue.empty():
         print(res_queue.get())
