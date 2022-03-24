@@ -24,6 +24,9 @@ class GridJsonParser:
             objects = list(ijson.items(load_f, 'features.item'))
             index = 0
 
+            # Need sort the file!
+            objects.sort(key=(lambda x: x['properties']['id']), reverse=False)
+
             for col in range(grid_columns):
                 for row in range(grid_rows):
 

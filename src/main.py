@@ -23,8 +23,17 @@ if __name__ == '__main__':
 
     grid_parser = GridJsonParser()
     print(grid_parser.get_all_grids())
+    print(grid_parser.get_grid_by_name('B1'))
     print(grid_parser.get_grid_by_name('B2'))
-    print(grid_parser.get_grid_by_name('D4'))
+    print(grid_parser.get_grid_by_name('B3'))
+    print(grid_parser.get_grid_by_name('B4'))
+
+    print('----------------------------------------')
+
+    print(grid_parser.get_grid_by_name('A2'))
+    print(grid_parser.get_grid_by_name('B2'))
+    print(grid_parser.get_grid_by_name('C2'))
+    print(grid_parser.get_grid_by_name('D2'))
 
     twitter_json_parser = TwitterJsonParser()
     print(twitter_json_parser.get_total_rows())
