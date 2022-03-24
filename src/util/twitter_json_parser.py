@@ -112,6 +112,10 @@ class TwitterJsonParser:
     def get_total_rows(self):
         return self.__total_rows
 
+    # TODO call it to free the twitter queue
+    def free_twitter_queue(self):
+        self.__twitter_queue = Queue()
+
     def get_twitter_queue(self):
         return self.__twitter_queue
 
