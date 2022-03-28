@@ -13,3 +13,6 @@ tiny裏有coordinates的1212162687049883648和1212166639598395394
 
 知乎， mpi4py使用： https://zhuanlan.zhihu.com/p/25332041
 https://zhuanlan.zhihu.com/p/157804393
+
+slurm Chinese doc
+: https://zhuanlan.zhihu.com/p/356415669
