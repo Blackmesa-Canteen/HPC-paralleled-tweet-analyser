@@ -29,7 +29,8 @@ class PathUtil(object):
         self.__rootPath = self.__rootPath.replace("\\", "/")
 
     def get_root_path(self):
-        return self.__rootPath
+        # return self.__rootPath
+        return os.path.dirname(sys.path[0])
 
 
 if __name__ == '__main__':
