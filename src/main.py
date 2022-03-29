@@ -2,14 +2,12 @@
 import os
 import random
 import sys
+import time
+from mpi4py import MPI
 
 # make single script runnable!!!
-import time
-
 sys.path.append(os.path.dirname(sys.path[0]))
 print('[debug] running root path:', os.path.dirname(sys.path[0]))
-
-from mpi4py import MPI
 
 import src.config.config_handler
 from src.handler.result_gather_handler import ResultGatherHandler
