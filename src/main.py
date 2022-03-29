@@ -76,7 +76,7 @@ if __name__ == '__main__':
 
     grid_parser = GridJsonParser()
     print(grid_parser.get_all_grids())
-    print(grid_parser.get_grid_by_name('B1'))
+    print(grid_parser.get_grid_by_name('A1'))
     print(grid_parser.get_grid_by_name('B2'))
     print(grid_parser.get_grid_by_name('B3'))
     print(grid_parser.get_grid_by_name('B4'))
@@ -96,6 +96,5 @@ if __name__ == '__main__':
     while not res_queue.empty():
         print(res_queue.get())
 
-    # multi_process_calc()
 
 # See PyCharm help at https://www.jetbrains.com/help/pycharm/

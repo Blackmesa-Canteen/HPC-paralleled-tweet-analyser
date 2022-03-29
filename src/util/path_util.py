@@ -38,3 +38,4 @@ if __name__ == '__main__':
     # path = PathUtil.getPathFromResources("context.ini")
     PathUtil = PathUtil()
     print(PathUtil.get_root_path())
+    

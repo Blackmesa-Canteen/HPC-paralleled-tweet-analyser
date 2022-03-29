@@ -11,3 +11,12 @@
 
 [补充]: 如果进程量过少, 文本过大, 如果把文件均分的话, 单个进程仍然太大, 所以在配置文件中引入了upper-bound-rows-per-iteration量, 用于设置每次迭代时装入内存的行数的数目
 '''
+
+
+from src.util.twitter_json_parser import TwitterJsonParser
+from src.config.config_handler import ConfigHandler
+
+class LangCalcHandler:
+
+    def __init__(self):
+        pass
