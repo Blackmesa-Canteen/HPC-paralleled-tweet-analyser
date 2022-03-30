@@ -15,8 +15,34 @@
 
 from src.util.twitter_json_parser import TwitterJsonParser
 from src.config.config_handler import ConfigHandler
+from src.util.grid_json_parser import GridJsonParser
 
 class LangCalcHandler:
 
-    def __init__(self):
-        pass
+    def __init__(self, thread_id):
+
+        # self._twitter_parser = twitter_parser
+        # self._grid_parser = gridparser
+        # self._args = args
+        self._thread_id = thread_id
+        self._result = []
+        
+    def handle(self, message):
+        self._result.append(self._thread_id)        
+
+    def result(self):
+        return self._result
+
+    # def lang_calc(self):
+    #     #[{'coordinates': [x, y], 'lang_tag': 'en'},{...},{...}, ...]
+    #     for dict in self._args:
+    #         try:
+    #             coord = dict['coordinates']
+    #             lang_tag = dict['lang_tag']
+    #         except Exception as e:
+    #             print("[WARNING] Missing keys")
+    #             continue
+
+    
+    
+            

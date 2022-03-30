@@ -55,3 +55,12 @@ class GridJsonParser:
     # input grid name, like 'A1', then get A1's coordinate [[x1,y1],[x2,y2]]
     def get_grid_by_name(self, name):
         return self.__grids[name]
+
+
+    # def which_grid(self, coordinate):
+
+    #     interval = 15
+    #     x_left = self.get_grid_by_name('A1')[0][0]
+    #     y_top = self.get_all_grids('D1')[]
+
+    #     pass  
