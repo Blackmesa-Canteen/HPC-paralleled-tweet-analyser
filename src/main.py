@@ -2,6 +2,7 @@
 from email import message
 import os
 import random
+from socket import timeout
 import sys
 
 # make single script runnable!!!
@@ -113,10 +114,10 @@ if __name__ == '__main__':
     twitter_json_parser = TwitterJsonParser()
 
 
-
+    twitter_json_parser.parse_valid_coordinate_lang_maps_in_range(start_index=0, step=500000000)
     step = config_handler.get_step()
     main_queue = twitter_json_parser.get_twitter_queue()
-
+    print(main_queue.empty())
     total_row = config_handler.get_upper_bound_rows_per_iteration()
 
     thread_nums = int( total_row / step)
@@ -127,41 +128,45 @@ if __name__ == '__main__':
     # define thread task (func, args=(queue, step))
     def lang_calc(thread_id, args):
 
+        print("[INFO] Thread ", thread_id, " start job {0}".format(args))
         main_queue, step = args
-
         lang_calc_handler = LangCalcHandler(thread_id)
 
-        # while step:
-        #     message = main_queue.get()
-        #     print("[INFO] message: ", message)
-        #     lang_calc_handler.handle(message)
-        #     step -= 1
-        for i in range(2):
-            lang_calc_handler.handle(thread_id)
+        print(main_queue.empty())
 
-        print("[INFO] Thread ", thread_id, " finish job {0}".format(args))
+        while step:
+            try:
+                lang_calc_handler.handle(1)
+                message = main_queue.get(timeout=3)
+
+            except Exception as e:
+                print("[INFO] Thread ", thread_id, " finish job {0}".format(args))
+                
+                print("[INFO] Thread {0} result {1}".format(thread_id, lang_calc_handler.result()))
+                return lang_calc_handler.result()
+
+
+            step -= 1
+
+
+
         
         return lang_calc_handler.result()
 
 
     # Scheduler
-    pool = ThreadPoolHandler(thread_nums)
+    pool = ThreadPoolHandler(2)
 
     print(thread_nums, step, total_row)
 
-    for i in range(0, 100):
+    for i in range(0, 2):
         pool.submit(lang_calc, (main_queue, step))
 
-    
-
     result = pool.collect_result()
-
     pool.stop()
     time.sleep(2)
-
-
-    print(pool)
-    print(result)
+    # print(pool)
+    print("Result: ", result)
     
 
 # See PyCharm help at https://www.jetbrains.com/help/pycharm/
