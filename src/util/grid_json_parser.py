@@ -1,6 +1,6 @@
 # author: Xiaotian Li
 # desc: parse grids from json and store them
-from matplotlib.pyplot import grid
+
 import ijson
         
 from decimal import Decimal
@@ -48,19 +48,11 @@ class GridJsonParser:
 
                     index += 1
 
-    # TODO 这是可以获得所有方格关键点坐标的函数
-    # grids: {A1:[[x1,y1],[x2,y2]], B1:[[x1,y1],[x2,y2]], C1:[[x1,y1],[x2,y2]] }
-    def get_all_grids(self):
-        return self.__grids
-
-    # TODO 这是可以获得指定名字的方格的关键点坐标的函数
-    # input grid name, like 'A1', then get A1's coordinate [[x1,y1],[x2,y2]]
-    def get_grid_by_name(self, name):
-        return self.__grids[name]
-
-
+    # 输入坐标，获得area
     def which_grid(self,pos):
-        
+        '''
+        TODO 还需要做一些边界检查
+        '''
         grid_info = self.__grids
         GAP = Decimal('0.15')
         achor1 = grid_info['A1'][0]
@@ -94,5 +86,30 @@ class GridJsonParser:
                 print(str(key))
                 return str(key)
             index -= 1
-
         return 'OUT OF RANGE'
+
+
+    # TODO 这是可以获得所有方格关键点坐标的函数
+    # grids: {A1:[[x1,y1],[x2,y2]], B1:[[x1,y1],[x2,y2]], C1:[[x1,y1],[x2,y2]] }
+    def get_all_grids(self):
+        return self.__grids
+
+    # TODO 这是可以获得指定名字的方格的关键点坐标的函数
+    # input grid name, like 'A1', then get A1's coordinate [[x1,y1],[x2,y2]]
+    def get_grid_by_name(self, name):
+        return self.__grids[name]
+    
+    '''
+    用来统计的主要表格
+    '''
+    def get_raw_table(self):
+
+        raw_table = {}
+
+        for key in self.__grids.keys():
+            raw_table[key] = [None]*3
+            raw_table[key][2] = {}
+            raw_table[key][1] = set()
+
+        return raw_table()
+ 

@@ -19,28 +19,42 @@ from src.util.grid_json_parser import GridJsonParser
 
 class LangCalcHandler:
 
-    def __init__(self, thread_id, table):
+    def __init__(self, thread_id, table, grid_parser, lang_parser):
 
-        # self._twitter_parser = twitter_parser
-        # self._grid_parser = gridparser
-        # self._args = args
         self._thread_id = thread_id
         self._table = table
+        self._grid_parser = grid_parser
+        self._lang_parser = lang_parser
 
     def handle(self, message):
-        self._table.append(self._thread_id)        
+        # self._table.append(self._thread_id)
+        
+        area = self._grid_parser.which_grid(tuple(message['coordinates']))
+        lang = self._lang_parser.get_lang_by_tag_name(message['lang_tag'])
+        record = self._table[area]
+
+        # update tweet num
+        record[0] += 1
+
+        # update lang num
+        record[1].add(lang)
+
+        # update ranks
+        lang_dict = record[2]
+
+        if lang in lang_dict:
+            lang_dict[lang] += 1
+        else:
+            lang_dict[lang] = 1
+
+    @staticmethod
+    def table_union(table_list, grid_parser):
+
+        raw_table = grid_parser.get_raw_table()    
+    
 
     def result(self):
         return self._table
 
-    # def lang_calc(self):
-    #     #[{'coordinates': [x, y], 'lang_tag': 'en'},{...},{...}, ...]
-    #     for dict in self._args:
-    #         try:
-    #             coord = dict['coordinates']
-    #             lang_tag = dict['lang_tag']
-    #         except Exception as e:
-    #             print("[WARNING] Missing keys")
-    #             continue
-
-
+    def get_thread_id(self):
+        return self._thread_id

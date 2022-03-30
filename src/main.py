@@ -1,15 +1,13 @@
 # Here we will write main script with
 
+from mimetypes import init
 import os
 import random
-from reprlib import aRepr
-from socket import timeout
+
 import sys
 
 # make single script runnable!!!
 import time
-from turtle import xcor
-from unicodedata import decimal
 
 
 # from pip import main
@@ -79,139 +77,28 @@ def multi_process_calc():
 
 
 # Press the green button in the gutter to run the script.
+
 if __name__ == '__main__':
 
-    # print_hi('PyCharm')
-    # config_handler = ConfigHandler()
-    # print(config_handler.get_grid_path(), " ", config_handler.get_grid_columns())
-    # print('upper-bound-rows', config_handler.get_upper_bound_rows_per_iteration())
-
-    # lang_tag_parser = LangTagJsonParser()
-    # print(lang_tag_parser.get_tag_lang_map())
-
-    # grid_parser = GridJsonParser()
-    # print(grid_parser.get_all_grids())
-    # print(grid_parser.get_grid_by_name('A1'))
-    # print(grid_parser.get_grid_by_name('B2'))
-    # print(grid_parser.get_grid_by_name('B3'))
-    # print(grid_parser.get_grid_by_name('B4'))
-
-    # print('----------------------------------------')
-
-    # print(grid_parser.get_grid_by_name('A2'))
-    # print(grid_parser.get_grid_by_name('B2'))
-    # print(grid_parser.get_grid_by_name('C2'))
-    # print(grid_parser.get_grid_by_name('D2'))
-
-    # twitter_json_parser = TwitterJsonParser()
-    # print(twitter_json_parser.get_total_rows())
-
-    # res_queue = twitter_json_parser.parse_valid_coordinate_lang_maps_in_range(start_index=0, step=500000000)
-
-    # while not res_queue.empty():
-    #     print(res_queue.get())
-
-
-
-    # init per-process 
+    '''
+    单进程多线程测试
+    '''
+    # init parser
     config_handler = ConfigHandler()
     lang_tag_parser = LangTagJsonParser()
     grid_parser = GridJsonParser()
     twitter_json_parser = TwitterJsonParser()
 
-
+    # init data
     twitter_json_parser.parse_valid_coordinate_lang_maps_in_range(start_index=0, step=500000000)
     step = config_handler.get_step()
     main_queue = twitter_json_parser.get_twitter_queue()
-    print(main_queue.empty())
     total_row = config_handler.get_upper_bound_rows_per_iteration()
     thread_nums = int( total_row / step)
-
-    grid_info = grid_parser.get_all_grids()
     job_nums = thread_nums
 
-    # define thread task (func, args=(queue, step))
-    # 执行线程的主要逻辑
-    
-    init_table = {}
-    # print(grid_info)
-
-    for key in grid_info.keys():
-        init_table[key] = [None]*3
-        init_table[key][2] = {}
 
 
-    '''
-    测试init table
-    '''
-
-    print(grid_info)
-
-    lang_calc = LangCalcHandler(1, init_table)
-    # init_table['A1'][0] = 1000
-    # init_table['A1'][2]['English'] = 1
-
-    # init_table['B1'][0] = 2000
-    # print(init_table)
-
-    # print(len(init_table.keys()))
-
-    from decimal import Decimal
-    def which_grid(grid_info, pos):
-
-        GAP = Decimal('0.15')
-        achor1 = grid_info['A1'][0]
-        achor2 = grid_info['A1'][1]
-        x_0, y_0 = achor1
-        x_1, y_1 = achor2
-
-        x, y = pos
-        x_step = -GAP
-        y_step = GAP
-
-        x_count = 0
-        y_count = 0
-
-        while True:
-            if x <= x_1 and x >= x_0:
-                break
-            x += x_step
-            x_count += 1
-
-        while True:
-            if y > y_1 and y <= y_0:
-                break
-            y += y_step
-            y_count += 1
-        
-        index = (x_count) * 4 + y_count
-
-        for key in grid_info.keys():
-            if index == 0:
-                print(str(key))
-                return str(key)
-            index -= 1
-
-        return 'OUT OF RANGE'
-    
-
-
-    
-    def lang_calc(thread_id, args):
-
-        print("[INFO] Thread ", thread_id, " start job {0}".format(args))
-        main_queue, step = args
-        lang_calc_handler = LangCalcHandler(thread_id)
-
-        print(main_queue.empty())
-        while step:
-            if main_queue.empty():
-                break
-            else:
-                message = main_queue.get()
-                lang_calc_handler.handle(1)
-
-        return lang_calc_handler.result()
 
 
     # Scheduler

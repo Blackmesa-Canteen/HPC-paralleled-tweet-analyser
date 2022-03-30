@@ -53,6 +53,9 @@ class ThreadPoolHandler(object):
         # list append thread safe
         self._collect = []
 
+        # TODO
+        self._job_num = 100
+
     def submit(self, job, args):
         # How jobs are defined
         load = (job, args)
@@ -114,6 +117,12 @@ class ThreadPoolHandler(object):
     def __str__(self):        
         return "[INFO]\nCurrent running thread: " + str(self._running_threads) + " \n" + "Current free thread: " + str(self._free_threads) + " \n" + "Current status: " + self.check_state()
 
+    # 线程池启动逻辑
+    def start(self, task, args):
+        func = self._get_func(task)
+        for i in range(self._job_num):
+            self.submit(func, args)
+        self.stop()
 
 
 # if __name__ == '__main__':
