@@ -19,19 +19,19 @@ from src.util.grid_json_parser import GridJsonParser
 
 class LangCalcHandler:
 
-    def __init__(self, thread_id):
+    def __init__(self, thread_id, table):
 
         # self._twitter_parser = twitter_parser
         # self._grid_parser = gridparser
         # self._args = args
         self._thread_id = thread_id
-        self._result = []
-        
+        self._table = table
+
     def handle(self, message):
-        self._result.append(self._thread_id)        
+        self._table.append(self._thread_id)        
 
     def result(self):
-        return self._result
+        return self._table
 
     # def lang_calc(self):
     #     #[{'coordinates': [x, y], 'lang_tag': 'en'},{...},{...}, ...]
@@ -43,6 +43,4 @@ class LangCalcHandler:
     #             print("[WARNING] Missing keys")
     #             continue
 
-    
-    
-            
+

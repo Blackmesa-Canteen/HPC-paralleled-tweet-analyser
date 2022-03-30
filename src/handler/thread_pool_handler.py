@@ -11,7 +11,6 @@ import time
 # A stop signal
 STOP = (404,404)
 # Test job function
-
 '''
 以下函数用来测试并发程度，可忽略
 '''
@@ -80,6 +79,7 @@ class ThreadPoolHandler(object):
 
             try:
                 result = func(thread_id, params)
+                print("Result here: ", result)
                 self._collect.append(result)
             except Exception as e:
                 print("[WARNING]Thread: {0} throw {1}".format(thread_id, e))

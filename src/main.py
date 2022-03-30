@@ -1,12 +1,16 @@
 # Here we will write main script with
-from email import message
+
 import os
 import random
+from reprlib import aRepr
 from socket import timeout
 import sys
 
 # make single script runnable!!!
 import time
+from turtle import xcor
+from unicodedata import decimal
+
 
 # from pip import main
 
@@ -26,6 +30,8 @@ from src.util.twitter_json_parser import TwitterJsonParser
 from src.handler.thread_pool_handler import ThreadPoolHandler
 from src.handler.lang_calc_handler import LangCalcHandler
 
+
+GAP = 0.15
 
 # The world
 comm = MPI.COMM_WORLD
@@ -119,13 +125,78 @@ if __name__ == '__main__':
     main_queue = twitter_json_parser.get_twitter_queue()
     print(main_queue.empty())
     total_row = config_handler.get_upper_bound_rows_per_iteration()
-
     thread_nums = int( total_row / step)
 
-
+    grid_info = grid_parser.get_all_grids()
     job_nums = thread_nums
 
     # define thread task (func, args=(queue, step))
+    # 执行线程的主要逻辑
+    
+    init_table = {}
+    # print(grid_info)
+
+    for key in grid_info.keys():
+        init_table[key] = [None]*3
+        init_table[key][2] = {}
+
+
+    '''
+    测试init table
+    '''
+
+    print(grid_info)
+
+    lang_calc = LangCalcHandler(1, init_table)
+    # init_table['A1'][0] = 1000
+    # init_table['A1'][2]['English'] = 1
+
+    # init_table['B1'][0] = 2000
+    # print(init_table)
+
+    # print(len(init_table.keys()))
+
+    from decimal import Decimal
+    def which_grid(grid_info, pos):
+
+        GAP = Decimal('0.15')
+        achor1 = grid_info['A1'][0]
+        achor2 = grid_info['A1'][1]
+        x_0, y_0 = achor1
+        x_1, y_1 = achor2
+
+        x, y = pos
+        x_step = -GAP
+        y_step = GAP
+
+        x_count = 0
+        y_count = 0
+
+        while True:
+            if x <= x_1 and x >= x_0:
+                break
+            x += x_step
+            x_count += 1
+
+        while True:
+            if y > y_1 and y <= y_0:
+                break
+            y += y_step
+            y_count += 1
+        
+        index = (x_count) * 4 + y_count
+
+        for key in grid_info.keys():
+            if index == 0:
+                print(str(key))
+                return str(key)
+            index -= 1
+
+        return 'OUT OF RANGE'
+    
+
+
+    
     def lang_calc(thread_id, args):
 
         print("[INFO] Thread ", thread_id, " start job {0}".format(args))
@@ -133,40 +204,30 @@ if __name__ == '__main__':
         lang_calc_handler = LangCalcHandler(thread_id)
 
         print(main_queue.empty())
-
         while step:
-            try:
+            if main_queue.empty():
+                break
+            else:
+                message = main_queue.get()
                 lang_calc_handler.handle(1)
-                message = main_queue.get(timeout=3)
 
-            except Exception as e:
-                print("[INFO] Thread ", thread_id, " finish job {0}".format(args))
-                
-                print("[INFO] Thread {0} result {1}".format(thread_id, lang_calc_handler.result()))
-                return lang_calc_handler.result()
-
-
-            step -= 1
-
-
-
-        
         return lang_calc_handler.result()
 
 
     # Scheduler
-    pool = ThreadPoolHandler(2)
+    # pool = ThreadPoolHandler(2)
 
-    print(thread_nums, step, total_row)
+    # print(thread_nums, step, total_row)
 
-    for i in range(0, 2):
-        pool.submit(lang_calc, (main_queue, step))
+    # for i in range(0, 2):
+    #     pool.submit(lang_calc, (main_queue, step))
 
-    result = pool.collect_result()
-    pool.stop()
-    time.sleep(2)
-    # print(pool)
-    print("Result: ", result)
+    # result = pool.collect_result()
+    # pool.stop()
+    # # time.sleep(2)
+    # # print(pool)
+    # # collect结果和queue的超时时间需要精确把控
+    # print("Result: ", result)
     
 
 # See PyCharm help at https://www.jetbrains.com/help/pycharm/

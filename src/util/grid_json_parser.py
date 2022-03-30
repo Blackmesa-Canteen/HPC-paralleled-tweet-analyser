@@ -1,7 +1,9 @@
 # author: Xiaotian Li
 # desc: parse grids from json and store them
+from matplotlib.pyplot import grid
 import ijson
-
+        
+from decimal import Decimal
 from src.config.config_handler import ConfigHandler
 from src.util.singleton_decorator import singleton
 
@@ -57,10 +59,40 @@ class GridJsonParser:
         return self.__grids[name]
 
 
-    # def which_grid(self, coordinate):
+    def which_grid(self,pos):
+        
+        grid_info = self.__grids
+        GAP = Decimal('0.15')
+        achor1 = grid_info['A1'][0]
+        achor2 = grid_info['A1'][1]
+        x_0, y_0 = achor1
+        x_1, y_1 = achor2
 
-    #     interval = 15
-    #     x_left = self.get_grid_by_name('A1')[0][0]
-    #     y_top = self.get_all_grids('D1')[]
+        x, y = pos
+        x_step = -GAP
+        y_step = GAP
 
-    #     pass  
+        x_count = 0
+        y_count = 0
+
+        while True:
+            if x <= x_1 and x >= x_0:
+                break
+            x += x_step
+            x_count += 1
+
+        while True:
+            if y > y_1 and y <= y_0:
+                break
+            y += y_step
+            y_count += 1
+        
+        index = (x_count) * 4 + y_count
+
+        for key in grid_info.keys():
+            if index == 0:
+                print(str(key))
+                return str(key)
+            index -= 1
+
+        return 'OUT OF RANGE'
