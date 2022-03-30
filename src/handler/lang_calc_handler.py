@@ -51,7 +51,10 @@ class LangCalcHandler:
     def table_union(table_list, grid_parser):
 
         raw_table = grid_parser.get_raw_table()    
-    
+
+
+        for table in table_list:
+            pass
 
     def result(self):
         return self._table

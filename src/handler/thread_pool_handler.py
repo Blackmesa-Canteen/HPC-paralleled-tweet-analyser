@@ -37,7 +37,7 @@ def func2(thread_name, params):
 
 # @singleton
 class ThreadPoolHandler(object):
-
+  
     def __init__(self, thread_num, max_jobs=10):
         # object.__init__(self)
         # Maybe useful
@@ -119,7 +119,8 @@ class ThreadPoolHandler(object):
 
     # 线程池启动逻辑
     def start(self, task, args):
-        func = self._get_func(task)
+
+        func = self._get_func(task)     # TODO 
         for i in range(self._job_num):
             self.submit(func, args)
         self.stop()
