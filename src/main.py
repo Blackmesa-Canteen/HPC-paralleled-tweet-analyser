@@ -98,7 +98,7 @@ if __name__ == '__main__':
     job_nums = thread_nums
 
 
-
+    print(grid_parser.get_all_grids())
 
 
     # Scheduler

@@ -13,6 +13,7 @@
 '''
 
 
+from curses import raw
 from src.util.twitter_json_parser import TwitterJsonParser
 from src.config.config_handler import ConfigHandler
 from src.util.grid_json_parser import GridJsonParser
@@ -49,12 +50,32 @@ class LangCalcHandler:
 
     @staticmethod
     def table_union(table_list, grid_parser):
-
         raw_table = grid_parser.get_raw_table()    
-
-
+        # table: {'A1':[num, (), {}], 'A1':[num, (), {}], .... }
+        # table_list: [table1, table2, table3, ... ]
         for table in table_list:
-            pass
+            
+            for key in table.keys():
+                
+                # update num
+                raw_table[key][0] += table[key][0]
+
+                # update lang num
+                raw_table[key][1].add(table[key][1])
+
+                # update lang rank
+                raw_lang_dict = raw_table[key][2]
+                lang_dict = table[key][2]
+
+                for lang in lang_dict.keys():
+                    
+                    if lang in raw_lang_dict:
+                        raw_lang_dict[lang] += lang_dict[lang]
+                    else:
+                        raw_lang_dict[lang] = lang_dict[lang]
+        return raw_table
+
+
 
     def result(self):
         return self._table

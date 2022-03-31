@@ -1,6 +1,9 @@
 # # TODO 线程池管理，可能能用上
 
 # from tkinter import N
+from ctypes import util
+from email import utils
+from shutil import get_archive_formats
 from src.util.singleton_decorator import singleton
 # from src.config.twitter_type_enum import ThreadPoolSign
 import queue
@@ -102,6 +105,9 @@ class ThreadPoolHandler(object):
         for i in range(0, len(self._running_threads)):
             self._queue.put(STOP)
 
+        while not (len(self._running_threads) == 0 and len(self._free_threads) == 0):
+            pass 
+
     def check_free_thread(self):
         return self._free_threads
 
@@ -119,12 +125,16 @@ class ThreadPoolHandler(object):
 
     # 线程池启动逻辑
     def start(self, task, args):
-
         func = self._get_func(task)     # TODO 
         for i in range(self._job_num):
             self.submit(func, args)
         self.stop()
-
+    
+    def _get_func(self, task):
+        if task not in dir(utils):
+            raise AttributeError(task + " does not exist")
+        func = getattr(utils, task)
+        return func
 
 # if __name__ == '__main__':
 #     pool = ThreadPoolHandler(20)
