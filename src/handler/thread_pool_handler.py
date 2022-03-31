@@ -41,7 +41,7 @@ def func2(thread_name, params):
 # @singleton
 class ThreadPoolHandler(object):
   
-    def __init__(self, thread_num, max_jobs=10):
+    def __init__(self, thread_num, job_num, max_jobs=1000):
         # object.__init__(self)
         # Maybe useful
         self._max_threads = thread_num
@@ -59,9 +59,9 @@ class ThreadPoolHandler(object):
         # TODO
         self._job_num = 100
 
-    def submit(self, job, args):
+    def submit(self, func, args):
         # How jobs are defined
-        load = (job, args)
+        load = (func, args)
         if self._cancel_flag == True:
             print("[INFO] ThreadPool is down")
             return
@@ -128,7 +128,6 @@ class ThreadPoolHandler(object):
         func = self._get_func(task)     # TODO 
         for i in range(self._job_num):
             self.submit(func, args)
-        self.stop()
     
     def _get_func(self, task):
         if task not in dir(utils):

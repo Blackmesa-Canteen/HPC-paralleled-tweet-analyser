@@ -9,7 +9,7 @@ from decimal import Decimal
 from src.handler.lang_calc_handler import LangCalcHandler
 from src.util.lang_tag_json_parser import LangTagJsonParser
 
-class utils:
+class Utils:
 
     def task_lang_calc(thread_id, args):
 
@@ -46,7 +46,10 @@ class utils:
             num -= 1        
         return q
     
+
+
     def visualise(table):
+        print("[INFO] No implementation for visualization")
         pass
 
     # TODO 用来测试

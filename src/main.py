@@ -27,6 +27,7 @@ from src.util.lang_tag_json_parser import LangTagJsonParser
 from src.util.twitter_json_parser import TwitterJsonParser
 from src.handler.thread_pool_handler import ThreadPoolHandler
 from src.handler.lang_calc_handler import LangCalcHandler
+from src.util.utils import Utils
 
 
 GAP = 0.15
@@ -91,30 +92,30 @@ if __name__ == '__main__':
 
     # init data
     twitter_json_parser.parse_valid_coordinate_lang_maps_in_range(start_index=0, step=500000000)
+    # records num that each thread would process
     step = config_handler.get_step()
-    main_queue = twitter_json_parser.get_twitter_queue()
+    # Main queue for one process
+    main_records_queue = twitter_json_parser.get_twitter_queue()
+    # how many records for one process
     total_row = config_handler.get_upper_bound_rows_per_iteration()
+    # threads number in thread pool
     thread_nums = int( total_row / step)
+
+    # how many job in the threadpool job queue
     job_nums = thread_nums
 
+    # run threadpool
+    pool = ThreadPoolHandler(thread_nums, job_nums)
+    args = (main_records_queue, step)
+    pool.start('lang_calc', args)
+    pool.stop()
 
-    print(grid_parser.get_all_grids())
+    # collect result and view
+    table_list = pool.collect_result()
+    table_sum = LangCalcHandler.table_union(table_list, grid_parser)
+    Utils.visualise(table_sum)
 
 
-    # Scheduler
-    # pool = ThreadPoolHandler(2)
 
-    # print(thread_nums, step, total_row)
 
-    # for i in range(0, 2):
-    #     pool.submit(lang_calc, (main_queue, step))
 
-    # result = pool.collect_result()
-    # pool.stop()
-    # # time.sleep(2)
-    # # print(pool)
-    # # collect结果和queue的超时时间需要精确把控
-    # print("Result: ", result)
-    
-
-# See PyCharm help at https://www.jetbrains.com/help/pycharm/
