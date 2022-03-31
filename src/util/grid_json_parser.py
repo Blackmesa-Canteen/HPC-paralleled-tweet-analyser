@@ -1,9 +1,9 @@
 # author: Xiaotian Li
 # desc: parse grids from json and store them
 
+
 import ijson
         
-from decimal import Decimal
 from src.config.config_handler import ConfigHandler
 from src.util.singleton_decorator import singleton
 
@@ -48,52 +48,50 @@ class GridJsonParser:
 
                     index += 1
 
-    # 输入坐标，获得area
+    '''
+    yuanzhis: input a tuple coordinate, return a area tag
+    '''
     def which_grid(self,pos):
-        '''
-        TODO 还需要做一些边界检查
-        '''
-        grid_info = self.__grids
-        GAP = Decimal('0.15')
-        achor1 = grid_info['A1'][0]
-        achor2 = grid_info['A1'][1]
-        x_0, y_0 = achor1
-        x_1, y_1 = achor2
+        grids = self.__grids
+    
+        x_interval = [(grids['A1'][0][0], grids['A2'][0][0]), 
+                        (grids['A2'][0][0], grids['A3'][0][0]),
+                        (grids['A3'][0][0], grids['A4'][0][0]),
+                        (grids['A4'][0][0], grids['B4'][1][0])]
 
+        y_interval = [(grids['A1'][0][1], grids['B1'][0][1]), 
+                        (grids['B1'][0][1], grids['C1'][0][1]),
+                        (grids['C1'][0][1], grids['D1'][0][1]),
+                        (grids['D1'][0][1], grids['D2'][1][1])]
         x, y = pos
-        x_step = -GAP
-        y_step = GAP
+        x_grid = 0
+        y_grid = 0
 
-        x_count = 0
-        y_count = 0
-
-        while True:
-            if x <= x_1 and x >= x_0:
+        for interval in x_interval:
+            if x == x_interval[0][0]:
+                x_grid = 0
                 break
-            x += x_step
-            x_count += 1
-
-        while True:
-            if y > y_1 and y <= y_0:
+            if x > interval[0] and x <= interval[1]:
                 break
-            y += y_step
-            y_count += 1
-        
-        index = (x_count) * 4 + y_count
+            x_grid += 1
+        for interval in y_interval:
+            if y == y_interval[3][1]:
+                y_grid = 3
+                break
+            if y <= interval[0] and y > interval[1]:
+                break
+            y_grid += 1
 
-        for key in grid_info.keys():
-            if index == 0:
-                return str(key)
-            index -= 1
-        return 'OUT OF RANGE'
+        index = x_grid * 4 + y_grid
+        grid_list = list(grids)  
+
+        return grid_list[index]
 
 
-    # TODO 这是可以获得所有方格关键点坐标的函数
     # grids: {A1:[[x1,y1],[x2,y2]], B1:[[x1,y1],[x2,y2]], C1:[[x1,y1],[x2,y2]] }
     def get_all_grids(self):
         return self.__grids
 
-    # TODO 这是可以获得指定名字的方格的关键点坐标的函数
     # input grid name, like 'A1', then get A1's coordinate [[x1,y1],[x2,y2]]
     def get_grid_by_name(self, name):
         return self.__grids[name]

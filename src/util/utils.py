@@ -1,5 +1,5 @@
 
-
+# author: YuanZhi Shang
 import queue
 import random
 from decimal import Decimal
@@ -10,22 +10,27 @@ class Utils:
 
     @staticmethod
     def lang_calc(thread_id, args):
-        print("[INFO] Thread ", thread_id, " start job")
+        # print("[INFO] Thread ", thread_id, " start job")
         main_queue, step, grid_parser, lang_tag_parser = args
         lang_calc_handler = LangCalcHandler(thread_id, grid_parser, lang_tag_parser)
 
-        while step:
+        '''
+        这里可能存在并发问题
+        '''
+        while step != 0:
             if main_queue.empty():
                 break
             else:
                 message = main_queue.get()
                 lang_calc_handler.handle(message)
             step -= 1
-        print("[INFO] Thread ", thread_id, " finish job")
+        # print("[INFO] Thread ", thread_id, " finish job")
         return lang_calc_handler.result()
 
     @staticmethod
     def sample_generator(num):
+
+        print("[INFO] Generating test data, length: ", num)
         x_left = 150.7655
         x_right = 151.3655
         y_top = -33.55412
@@ -41,7 +46,8 @@ class Utils:
             record['coordinates'] = [x, y]
             record['lang_tag'] = tag
             q.put(record)
-            num -= 1        
+            num -= 1
+        print("[INFO] Finish generation !")        
         return q
     
     @staticmethod
@@ -50,7 +56,6 @@ class Utils:
 
         pass
 
-    # TODO 用来测试
     @staticmethod
     def test_task():
         pass
@@ -81,7 +86,8 @@ class Utils:
         
         for key in raw_table.keys():
             raw_table[key][1] = len(raw_table[key][1])
-            raw_table[key][2] = list(sorted(raw_table[key][2].items(), key=lambda x: x[1], reverse=True))[:10]
+            # add [:10] to get top 10
+            raw_table[key][2] = list(sorted(raw_table[key][2].items(), key=lambda x: x[1], reverse=True))
 
 
         return raw_table

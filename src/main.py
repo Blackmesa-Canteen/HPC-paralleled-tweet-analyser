@@ -2,16 +2,13 @@
 
 import os
 import random
-import re
-
 import sys
 
 # make single script runnable!!!
 import time
+from decimal import Decimal
 
-
-# from pip import main
-
+import datetime 
 
 
 sys.path.append(os.path.dirname(sys.path[0]))
@@ -81,6 +78,10 @@ def multi_process_calc():
 
 if __name__ == '__main__':
 
+
+    '''
+    以下为启动逻辑
+    '''
     # init parser
     config_handler = ConfigHandler()
     lang_tag_parser = LangTagJsonParser()
@@ -112,32 +113,49 @@ if __name__ == '__main__':
     # table_sum = LangCalcHandler.table_union(table_list, grid_parser)
     # Utils.visualise(table_sum)
 
-
-
     '''
     以下程序用来测试
     '''
-    
-    thread_nums = 1000   # 线程池最大线程，提交的任务大于此数量则不会生成新的线程
-    job_nums = 10        # 线程池任务数，代表你想用几个线程去完成这个工作，若任务数为2，则生成两个线程，每个线程的消费数量为total_row / job_num
-    max_job = 99999      # 线程池最大任务数，默认无限大，无关紧要
 
-    # 进程池实例
-    pool = ThreadPoolHandler(thread_nums, job_nums, max_job)   
-    # 生成测试数据
-    total_row = 10000
+    begintime = datetime.datetime.now()
+
+    total_row = 1000000
+    step = 500
+    
+    thread_nums = int(total_row / step)
+     
+    pool = ThreadPoolHandler(thread_nums)   
+    # Test random data
+
     q = Utils.sample_generator(total_row)
 
-    # packing thread function argument
-    args = (q, total_row / job_nums, grid_parser, lang_tag_parser)
+    # packing params
+    args = (q, step, grid_parser, lang_tag_parser)
+
+    starttime = datetime.datetime.now()
     pool.run_task('lang_calc', args)
     pool.stop()
+    endtime = datetime.datetime.now()
+    
+    threadtime = endtime - starttime
     
     # Collect result from multiple threads
     table_list = pool.collect_result()
     final_table = Utils.table_union(table_list, grid_parser)
 
-
     # simple visualise
     for key in final_table.keys():
+        record = final_table[key]
+        lang_vs_num = record[2]
+        lang_types_num = record[1]
+        total_tw = record[0]
+        assert(len(record[2]) == lang_types_num)
+        sum = 0
+        for item in lang_vs_num:
+            sum += item[1]
+        assert(sum == total_tw)
         print(key, ": ", final_table[key])
+
+
+    lasttime = datetime.datetime.now()
+    print("[INFO] Time threadpool: ", threadtime, " Time total: ", lasttime - begintime)

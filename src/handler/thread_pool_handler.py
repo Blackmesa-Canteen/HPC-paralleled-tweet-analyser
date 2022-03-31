@@ -1,4 +1,4 @@
-# # TODO 线程池管理，可能能用上
+# author: YuanZhi Shang
 
 
 from src.util.singleton_decorator import singleton
@@ -12,39 +12,17 @@ import time
 
 # A stop signal
 STOP = (404,404)
-# Test job function
-'''
-以下函数用来测试并发程度，可忽略
-'''
-def func(thread_name, jobid):
-    for i in range(0,3):
-        print("[INFO] Thread: ", thread_name, " is doing job {0}".format(jobid))
-        # time.sleep(0.1)
-    print("[INFO] Thread ", thread_name, " finish job {0}".format(jobid))
-    return jobid
-
-global_queue = queue.Queue()
-global_list = []
-
-def func2(thread_name, params):
-    for i in range(0,3):
-        print("[INFO] Thread: ", thread_name, " is doing job {0}".format(params))
-        # time.sleep(1)
-        # global_queue.put(thread_name)
-        global_list.append(thread_name)
-    
-    print("[INFO] Thread ", thread_name, " finish job {0}".format(params))
-    # print("LIST: ", global_list)
-    return thread_name
 
 # @singleton
 class ThreadPoolHandler(object):
   
-    def __init__(self, thread_num, job_num, max_jobs=10000):
+    def __init__(self, thread_num, max_threads=1000):
         # object.__init__(self)
         # Maybe useful
-        self._max_threads = thread_num
+        self._max_threads = max_threads
         # self._max_jobs = max_jobs
+        self._thread_num = thread_num
+
         self._cancel_flag = False
 
         # Main data structure 
@@ -56,8 +34,7 @@ class ThreadPoolHandler(object):
         # list append thread safe
         self._collect = []
 
-        # TODO
-        self._job_num = job_num
+
 
     def submit(self, func, args):
         # How jobs are defined
@@ -66,8 +43,10 @@ class ThreadPoolHandler(object):
             print("[WARNING] ThreadPool is down")
             return
         # Start new thread
-        if len(self._running_threads) < self._max_threads and len(self._free_threads) == 0:
+        # if len(self._running_threads) < self._max_threads and len(self._free_threads) == 0:
+        if len(self._running_threads) < self._max_threads:
             thread = threading.Thread(target=self.run)
+            print("[INFO] Create thread: ", thread.getName())
             thread.start()
         # Or use exist thread
         self._queue.put(task)
@@ -123,11 +102,10 @@ class ThreadPoolHandler(object):
     def __str__(self):        
         return "[INFO]\nCurrent running thread: " + str(self._running_threads) + " \n" + "Current free thread: " + str(self._free_threads) + " \n" + "Current status: " + self.check_state()
 
-    # 线程池启动逻辑
+    # Main execution logic
     def run_task(self, task, args):
         func = self._get_func(task)
-        for i in range(self._job_num):
-            print("[INFO] Submit job")
+        for i in range(self._thread_num):
             self.submit(func, args)
     
     def _get_func(self, task):
@@ -136,15 +114,28 @@ class ThreadPoolHandler(object):
         func = getattr(Utils, task)
         return func
 
-# if __name__ == '__main__':
-#     pool = ThreadPoolHandler(20)
-#     for i in range(100):
-#         pool.submit(func2, i)
-#     time.sleep(4)
-#     pool.stop()
-#     # print(pool.collect())
-#     # print(len(pool.collect()))
-#     # print(global_list)
 
+# Test job function
+'''
+Test function for thread pool
+'''
+def func(thread_name, jobid):
+    for i in range(0,3):
+        print("[INFO] Thread: ", thread_name, " is doing job {0}".format(jobid))
+        # time.sleep(0.1)
+    print("[INFO] Thread ", thread_name, " finish job {0}".format(jobid))
+    return jobid
 
+global_queue = queue.Queue()
+global_list = []
 
+def func2(thread_name, params):
+    for i in range(0,3):
+        print("[INFO] Thread: ", thread_name, " is doing job {0}".format(params))
+        # time.sleep(1)
+        # global_queue.put(thread_name)
+        global_list.append(thread_name)
+    
+    print("[INFO] Thread ", thread_name, " finish job {0}".format(params))
+    # print("LIST: ", global_list)
+    return thread_name
