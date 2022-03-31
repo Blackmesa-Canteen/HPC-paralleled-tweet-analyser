@@ -8,8 +8,8 @@ import sys
 import time
 from decimal import Decimal
 
-import datetime 
-
+import datetime
+from math import ceil
 
 sys.path.append(os.path.dirname(sys.path[0]))
 print('[debug] running root path:', os.path.dirname(sys.path[0]))
@@ -122,7 +122,7 @@ if __name__ == '__main__':
     total_row = 1000000
     step = 500
     
-    thread_nums = int(total_row / step)
+    thread_nums = ceil(total_row / step)
      
     pool = ThreadPoolHandler(thread_nums)   
     # Test random data
