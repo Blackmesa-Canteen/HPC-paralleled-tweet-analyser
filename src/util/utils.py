@@ -9,7 +9,6 @@ from decimal import Decimal
 from src.handler.lang_calc_handler import LangCalcHandler
 from src.util.lang_tag_json_parser import LangTagJsonParser
 
-
 class utils:
 
     def task_lang_calc(thread_id, args):
@@ -24,8 +23,8 @@ class utils:
                 break
             else:
                 message = main_queue.get()
-                lang_calc_handler.handle(1)
-
+                lang_calc_handler.handle(message)
+            step -= 1
         return lang_calc_handler.result()
 
     def sample_generator(num):
@@ -46,7 +45,10 @@ class utils:
             q.put(record)
             num -= 1        
         return q
-        
+    
+    def visualise(table):
+        pass
+
     # TODO 用来测试
     def test_task():
         pass
