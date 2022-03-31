@@ -3,6 +3,11 @@
 import queue
 import random
 from decimal import Decimal
+from socket import timeout
+from threading import Lock
+from time import time
+
+from pip import main
 from src.handler.lang_calc_handler import LangCalcHandler
 from src.util.lang_tag_json_parser import LangTagJsonParser
 
@@ -15,16 +20,13 @@ class Utils:
         lang_calc_handler = LangCalcHandler(thread_id, grid_parser, lang_tag_parser)
 
         '''
-        这里可能存在并发问题
+        这里可能存在并发问题 
         '''
-        while step != 0:
-            if main_queue.empty():
-                break
-            else:
-                message = main_queue.get()
-                lang_calc_handler.handle(message)
-            step -= 1
-        # print("[INFO] Thread ", thread_id, " finish job")
+        while not main_queue.empty():
+            # Lock..acquire()
+            message = main_queue.get(timeout)
+            lang_calc_handler.handle(message)
+
         return lang_calc_handler.result()
 
     @staticmethod
