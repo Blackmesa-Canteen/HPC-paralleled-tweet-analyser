@@ -83,7 +83,6 @@ class GridJsonParser:
 
         for key in grid_info.keys():
             if index == 0:
-                print(str(key))
                 return str(key)
             index -= 1
         return 'OUT OF RANGE'
@@ -100,16 +99,14 @@ class GridJsonParser:
         return self.__grids[name]
     
     '''
-    用来统计的主要表格
+    Table format
     '''
     def get_raw_table(self):
-
         raw_table = {}
-
         for key in self.__grids.keys():
             raw_table[key] = [None]*3
+            raw_table[key][0] = 0
             raw_table[key][2] = {}
             raw_table[key][1] = set()
-
-        return raw_table()
+        return raw_table
  

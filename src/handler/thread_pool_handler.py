@@ -1,11 +1,10 @@
 # # TODO 线程池管理，可能能用上
 
-# from tkinter import N
-from ctypes import util
-from email import utils
-from shutil import get_archive_formats
+
 from src.util.singleton_decorator import singleton
-# from src.config.twitter_type_enum import ThreadPoolSign
+from src.util.utils import Utils
+
+import logging
 import queue
 import threading
 import time
@@ -41,7 +40,7 @@ def func2(thread_name, params):
 # @singleton
 class ThreadPoolHandler(object):
   
-    def __init__(self, thread_num, job_num, max_jobs=1000):
+    def __init__(self, thread_num, job_num, max_jobs=10000):
         # object.__init__(self)
         # Maybe useful
         self._max_threads = thread_num
@@ -49,7 +48,8 @@ class ThreadPoolHandler(object):
         self._cancel_flag = False
 
         # Main data structure 
-        self._queue = queue.Queue(max_jobs)
+        self._queue = queue.Queue()
+        # self._queue = queue.Queue(max_jobs)
         self._running_threads = []
         self._free_threads = []
 
@@ -57,20 +57,20 @@ class ThreadPoolHandler(object):
         self._collect = []
 
         # TODO
-        self._job_num = 100
+        self._job_num = job_num
 
     def submit(self, func, args):
         # How jobs are defined
-        load = (func, args)
+        task = (func, args)
         if self._cancel_flag == True:
-            print("[INFO] ThreadPool is down")
+            print("[WARNING] ThreadPool is down")
             return
         # Start new thread
         if len(self._running_threads) < self._max_threads and len(self._free_threads) == 0:
             thread = threading.Thread(target=self.run)
             thread.start()
         # Or use exist thread
-        self._queue.put(load)
+        self._queue.put(task)
  
     # All threads would call this
     def run(self):
@@ -80,24 +80,24 @@ class ThreadPoolHandler(object):
         task = self._queue.get()
         # Work until handler say stop
         while task != STOP:
-            func, params = task
-            print("[INFO] Thread: {0} get a job: {1}".format(thread_id, params))
+            func, args = task
+            # print("[INFO] Thread: {0} get a job: {1}".format(thread_id, params))
 
             try:
-                result = func(thread_id, params)
-                print("Result here: ", result)
+                result = func(thread_id, args)
                 self._collect.append(result)
             except Exception as e:
-                print("[WARNING]Thread: {0} throw {1}".format(thread_id, e))
+                # print("[WARNING]Thread: {0} throw {1}".format(thread_id, e))
+                logging.exception(e)
             # Finish one job (wether success or not)
             self._free_threads.append(thread_id)
             # All threads will block here if no job
             task = self._queue.get()
-            print("[INFO] Queue: get a job: {0}, thread: {1} run again".format(params, thread_id))
+            # print("[INFO] Queue: get a job: {0}, thread: {1} run again".format(params, thread_id))
             self._free_threads.remove(thread_id)
         
         self._running_threads.remove(thread_id)
-        print("[INFO] Current thread: {0} is done".format(thread_id))
+        # print("[INFO] Current thread: {0} is done".format(thread_id))
 
     # gently stop thread pool
     def stop(self):
@@ -124,15 +124,16 @@ class ThreadPoolHandler(object):
         return "[INFO]\nCurrent running thread: " + str(self._running_threads) + " \n" + "Current free thread: " + str(self._free_threads) + " \n" + "Current status: " + self.check_state()
 
     # 线程池启动逻辑
-    def start(self, task, args):
-        func = self._get_func(task)     # TODO 
+    def run_task(self, task, args):
+        func = self._get_func(task)
         for i in range(self._job_num):
+            print("[INFO] Submit job")
             self.submit(func, args)
     
     def _get_func(self, task):
-        if task not in dir(utils):
+        if task not in dir(Utils):
             raise AttributeError(task + " does not exist")
-        func = getattr(utils, task)
+        func = getattr(Utils, task)
         return func
 
 # if __name__ == '__main__':

@@ -20,10 +20,10 @@ from src.util.grid_json_parser import GridJsonParser
 
 class LangCalcHandler:
 
-    def __init__(self, thread_id, table, grid_parser, lang_parser):
+    def __init__(self, thread_id, grid_parser, lang_parser):
 
         self._thread_id = thread_id
-        self._table = table
+        self._table = grid_parser.get_raw_table()
         self._grid_parser = grid_parser
         self._lang_parser = lang_parser
 
@@ -47,35 +47,6 @@ class LangCalcHandler:
             lang_dict[lang] += 1
         else:
             lang_dict[lang] = 1
-
-    @staticmethod
-    def table_union(table_list, grid_parser):
-        raw_table = grid_parser.get_raw_table()    
-        # table: {'A1':[num, (), {}], 'A1':[num, (), {}], .... }
-        # table_list: [table1, table2, table3, ... ]
-        for table in table_list:
-            
-            for key in table.keys():
-                
-                # update num
-                raw_table[key][0] += table[key][0]
-
-                # update lang num
-                raw_table[key][1].add(table[key][1])
-
-                # update lang rank
-                raw_lang_dict = raw_table[key][2]
-                lang_dict = table[key][2]
-
-                for lang in lang_dict.keys():
-                    
-                    if lang in raw_lang_dict:
-                        raw_lang_dict[lang] += lang_dict[lang]
-                    else:
-                        raw_lang_dict[lang] = lang_dict[lang]
-        return raw_table
-
-
 
     def result(self):
         return self._table

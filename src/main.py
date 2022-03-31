@@ -1,8 +1,8 @@
 # Here we will write main script with
 
-from mimetypes import init
 import os
 import random
+import re
 
 import sys
 
@@ -81,9 +81,6 @@ def multi_process_calc():
 
 if __name__ == '__main__':
 
-    '''
-    单进程多线程测试
-    '''
     # init parser
     config_handler = ConfigHandler()
     lang_tag_parser = LangTagJsonParser()
@@ -101,21 +98,46 @@ if __name__ == '__main__':
     # threads number in thread pool
     thread_nums = int( total_row / step)
 
-    # how many job in the threadpool job queue
-    job_nums = thread_nums
+    # # how many job in the threadpool job queue
+    # job_nums = thread_nums
 
-    # run threadpool
-    pool = ThreadPoolHandler(thread_nums, job_nums)
-    args = (main_records_queue, step)
-    pool.start('lang_calc', args)
+    # # run threadpool
+    # pool = ThreadPoolHandler(thread_nums, job_nums)
+    # args = (main_records_queue, step)
+    # pool.start('lang_calc', args)
+    # pool.stop()
+
+    # # collect result and view
+    # table_list = pool.collect_result()
+    # table_sum = LangCalcHandler.table_union(table_list, grid_parser)
+    # Utils.visualise(table_sum)
+
+
+
+    '''
+    以下程序用来测试
+    '''
+    
+    thread_nums = 1000   # 线程池最大线程，提交的任务大于此数量则不会生成新的线程
+    job_nums = 10        # 线程池任务数，代表你想用几个线程去完成这个工作，若任务数为2，则生成两个线程，每个线程的消费数量为total_row / job_num
+    max_job = 99999      # 线程池最大任务数，默认无限大，无关紧要
+
+    # 进程池实例
+    pool = ThreadPoolHandler(thread_nums, job_nums, max_job)   
+    # 生成测试数据
+    total_row = 10000
+    q = Utils.sample_generator(total_row)
+
+    # packing thread function argument
+    args = (q, total_row / job_nums, grid_parser, lang_tag_parser)
+    pool.run_task('lang_calc', args)
     pool.stop()
-
-    # collect result and view
+    
+    # Collect result from multiple threads
     table_list = pool.collect_result()
-    table_sum = LangCalcHandler.table_union(table_list, grid_parser)
-    Utils.visualise(table_sum)
+    final_table = Utils.table_union(table_list, grid_parser)
 
 
-
-
-
+    # simple visualise
+    for key in final_table.keys():
+        print(key, ": ", final_table[key])
