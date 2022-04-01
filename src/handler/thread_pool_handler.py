@@ -23,6 +23,8 @@ class ThreadPoolHandler(object):
         # self._max_jobs = max_jobs
         self._thread_num = thread_num
 
+        self._max_threads = max_threads
+
         self._cancel_flag = False
 
         # Main data structure 
@@ -33,8 +35,6 @@ class ThreadPoolHandler(object):
 
         # list append thread safe
         self._collect = []
-
-
 
     def submit(self, func, args):
         # How jobs are defined

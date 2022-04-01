@@ -64,17 +64,20 @@ class ConfigHandler:
                 print('[debug] loaded cfg, big_twitter_path is: ', self.__big_twitter_path)
 
         else:
-            print('warning: config/config.yml not found, using default settings')
-            self.__upper_bound_rows_per_iteration = 10000
-            self.__step = 100
-            self.__input_twitter_type = InputTwitterType.TINY
-            self.__grid_path = '/data/projects/COMP90024/sydGrid.json'
-            self.__tiny_twitter_path = '/data/projects/COMP90024/tinyTwitter.json'
-            self.__small_twitter_path = '/data/projects/COMP90024/smallTwitter.json'
-            self.__big_twitter_path = '/data/projects/COMP90024/bigTwitter.json'
-            self.__thread_pool_size = 8
-            self.__grid_rows = 4
-            self.__grid_columns = 4
+            # print('warning: config/config.yml not found, using default settings')
+            print('[ERROR] config file not found!')
+            exit(-1)
+
+            # self.__upper_bound_rows_per_iteration = 10000
+            # self.__step = 100
+            # self.__input_twitter_type = InputTwitterType.TINY
+            # self.__grid_path = '/data/projects/COMP90024/sydGrid.json'
+            # self.__tiny_twitter_path = '/data/projects/COMP90024/tinyTwitter.json'
+            # self.__small_twitter_path = '/data/projects/COMP90024/smallTwitter.json'
+            # self.__big_twitter_path = '/data/projects/COMP90024/bigTwitter.json'
+            # self.__thread_pool_size = 8
+            # self.__grid_rows = 4
+            # self.__grid_columns = 4
 
     # getters
     def get_grid_rows(self):
