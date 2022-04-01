@@ -19,7 +19,7 @@ STOP = (404,404)
 # @singleton
 class ThreadPoolHandler(object):
   
-    def __init__(self, start_index=0, test_mode=False, test_queue_num=1000, test_step=500):
+    def __init__(self, start_index=0, process_step=100000, test_mode=False, test_queue_num=1000, test_thread_step=500):
 
         self._config_handler = ConfigHandler()
         self._lang_tag_parser = LangTagJsonParser()
@@ -28,14 +28,14 @@ class ThreadPoolHandler(object):
 
         if test_mode:
             self._main_queue = self._twitter_json_parser.test_queue_generator(test_queue_num)
-            self._total_rows = test_queue_num
-            self._step = test_step
+            self._total_rows_per_proces = test_queue_num
+            self._thread_step = test_thread_step
         else:
-            self._main_queue = self._twitter_json_parser.parse_valid_coordinate_lang_maps_in_range(start_index=0, step=500000000)
-            self._total_rows = self._config_handler.get_upper_bound_rows_per_iteration()
-            self._step = self._config_handler.get_step()
+            self._main_queue = self._twitter_json_parser.parse_valid_coordinate_lang_maps_in_range(start_index=start_index, step=process_step)
+            self._total_rows_per_proces = self._config_handler.get_upper_bound_rows_per_iteration()
+            self._thread_step = self._config_handler.get_step()
 
-        self._thread_nums = ceil(self._total_rows / self._step)
+        self._thread_nums = ceil(self._total_rows_per_proces / self._thread_step)
 
         self._thread_nums = 2000 if self._thread_nums > 2000 else self._thread_nums
         self._thread_pool = ThreadPoolExecutor(self._thread_nums)
@@ -45,7 +45,7 @@ class ThreadPoolHandler(object):
 
     def launch(self, task):
         func = self._get_func(task)
-        args = (self._main_queue, self._step, 
+        args = (self._main_queue, self._thread_step, 
                     self._grid_parser, self._lang_tag_parser)
         for i in range(self._job_num):
             future = self._thread_pool.submit(func, args)
@@ -67,5 +67,5 @@ class ThreadPoolHandler(object):
         self._result.append(future.result())
 
     def info(self):
-        return " \n ThreadNum: " + str(self._thread_nums) + " \n threadstep: " + str(self._step)
+        return " \n ThreadNum: " + str(self._thread_nums) + " \n threadstep: " + str(self._thread_step)
     

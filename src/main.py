@@ -3,6 +3,7 @@ from cmath import polar
 from dataclasses import dataclass
 import os
 import random
+import re
 import sys
 
 # make single script runnable!!!
@@ -12,6 +13,7 @@ from decimal import Decimal
 import datetime
 from math import ceil
 from tkinter import N
+
 
 
 # make single script runnable!!!
@@ -31,66 +33,28 @@ from src.handler.lang_calc_handler import LangCalcHandler
 
 
 
-# The world
-comm = MPI.COMM_WORLD
-
-# Total Processes
-total_processes = comm.Get_size()
-
-# Current Process rank
-current_process_rank = comm.Get_rank()
-
-
-def print_hi(name):
-    # Use a breakpoint in the code line below to debug your script.
-    print(f'Hi, {name}')  # Press Ctrl+F8 to toggle the breakpoint.
-
-
-# demo for multi process calc running
-# mpiexec -np 8 python /home/xiaotian/Desktop/projects/comp90024_ass_1/COMP90024_Assignment_1/src/main.py
-def multi_process_calc():
-    thread_demo = ResultGatherHandler(comm)
-    if current_process_rank == 0:
-
-        thread_demo.start()
-
-        # fake calculation
-        time.sleep(random.randint(1, 3))
-
-        # busy waiting to wait for others
-        while not thread_demo.is_finished_receiving():
-            pass
-
-        # now we received all res,
-        res = thread_demo.get_received_data()
-
-        # insert master's fake result
-        res[0] = 0
-        print("[debug] received data:", res)
-
-    else:
-        # fake calculation
-        time.sleep(random.randint(1, 8))
-
-        # send result
-        TestSendHandler(comm).start()
-
-
-# Press the green button in the gutter to run the script.
-
 if __name__ == '__main__':
-    # parser = TwitterJsonParser()
-    # print(parser.get_total_rows())
 
+    comm = MPI.COMM_WORLD                                                      
+    rank = comm.Get_rank()                                                     
+    size = comm.Get_size()                                                     
 
-    start = datetime.datetime.now()
+    if rank == 0:
+        send_data = (0, 99999, 199999, 299999, 399999)
+        
+    else:                                                                      
+        send_data = None
 
-    pool = ThreadPoolHandler(test_mode=True, test_queue_num=1000000, test_step=500)
-    pool.launch('lang_calc')
+    # Per-process except rank 0
+    recv_data = comm.scatter(send_data, root=0)                                       
+    pool = ThreadPoolHandler(recv_data, test_mode=True, test_queue_num=100000, process_step=100000)
+    pool.launch('lang_calc')   
+    result = pool.collect_result()    
+    send_data = result
+    recv_data = comm.gather(send_data, root=0)
 
-    end = datetime.datetime.now()
-
-    final_table = pool.collect_result()
-    LangCalcHandler.view(final_table)
-
-    print("\n Time total: ", end-start)
+    if rank == 0:
+        print(len(recv_data))
+        grid_parser = GridJsonParser()
+        table = LangCalcHandler.table_union(recv_data, grid_parser)
+        LangCalcHandler.view(table)

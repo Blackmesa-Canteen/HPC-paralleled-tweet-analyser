@@ -63,10 +63,10 @@ class LangCalcHandler:
                     else:
                         raw_lang_dict[lang] = lang_dict[lang]
         
-        for key in raw_table.keys():
-            raw_table[key][1] = len(raw_table[key][1])
-            # add [:10] to get top 10
-            raw_table[key][2] = list(sorted(raw_table[key][2].items(), key=lambda x: x[1], reverse=True))
+        # for key in raw_table.keys():
+        #     raw_table[key][1] = len(raw_table[key][1])
+        #     # add [:10] to get top 10
+        #     raw_table[key][2] = list(sorted(raw_table[key][2].items(), key=lambda x: x[1], reverse=True))
         return raw_table
 
     @staticmethod
@@ -76,11 +76,11 @@ class LangCalcHandler:
         print("[INFO] Thread ", thread_id, " start job")
         main_queue, step, grid_parser, lang_tag_parser = args
         lang_calc_handler = LangCalcHandler(grid_parser, lang_tag_parser)
+
         '''
         这里可能存在并发问题 
         '''
         records = 0
-
         while step != 0:
             if main_queue.empty():
                 break
@@ -109,11 +109,11 @@ class LangCalcHandler:
             total_tw = record[0]
 
             sum_record += total_tw
-            assert (len(record[2]) == lang_types_num)
-            sum = 0
-            for item in lang_vs_num:
-                sum += item[1]
-            assert (sum == total_tw)
+            # assert (len(record[2]) == lang_types_num)
+            # sum = 0
+            # for item in lang_vs_num:
+            #     sum += int(item[1])
+            # assert (sum == total_tw)
             print(key, ": ", final_table[key])
         print(" Toal records: ", sum_record)
 
