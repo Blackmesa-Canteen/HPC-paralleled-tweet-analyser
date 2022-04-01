@@ -57,8 +57,8 @@ if __name__ == '__main__':
     start_index = recv_data[0]
     total_rows_per_process = recv_data[1]
 
-    start_index = 0
-    total_rows_per_process = 600000
+    # start_index = 0
+    # total_rows_per_process = 600000
     pool = ThreadPoolHandler(start_index=start_index, total_rows_per_process=total_rows_per_process, 
                                     test_thread_step=500, test_mode=True)
 
@@ -81,5 +81,8 @@ if __name__ == '__main__':
         endtime = datetime.datetime.now()
 
         print(" Time Total: ", endtime - starttime)
+
+
+
 
 
