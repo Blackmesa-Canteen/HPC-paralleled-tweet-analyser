@@ -41,7 +41,7 @@ if __name__ == '__main__':
     '''
     TODO: 命令行解析进程数
     '''
-    PROCESS_NUM = 1
+    PROCESS_NUM = 3
 
     if rank == 0:
 
@@ -74,15 +74,14 @@ if __name__ == '__main__':
     recv_data = comm.gather(send_data, root=0)
 
     if rank == 0:
-        print(len(recv_data))
+
         grid_parser = GridJsonParser()
-       
-        table = LangCalcHandler.table_union(recv_data, grid_parser)
-        table.check(check=True)
+        table = LangCalcHandler.table_union(recv_data, grid_parser) 
 
         for key in table.keys():
-            table[key][1] = len(table[key][1])
-        
+                table[key][1] = len(table[key][1])
+                # add [:10] to get top 10
+                table[key][2] = list(sorted(table[key][2].items(), key=lambda x: x[1], reverse=True))
         LangCalcHandler.view(table)
 
 

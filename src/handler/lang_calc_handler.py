@@ -6,7 +6,10 @@ import threading
 from src.util.twitter_json_parser import TwitterJsonParser
 from src.config.config_handler import ConfigHandler
 from src.util.grid_json_parser import GridJsonParser
+from mpi4py import MPI
 
+
+comm = MPI.COMM_WORLD    
 class LangCalcHandler:
 
     def __init__(self, grid_parser, lang_parser):
@@ -66,8 +69,8 @@ class LangCalcHandler:
         
         # for key in raw_table.keys():
         #     raw_table[key][1] = len(raw_table[key][1])
-            # add [:10] to get top 10
-            # raw_table[key][2] = list(sorted(raw_table[key][2].items(), key=lambda x: x[1], reverse=True))
+        #     # add [:10] to get top 10
+        #     raw_table[key][2] = list(sorted(raw_table[key][2].items(), key=lambda x: x[1], reverse=True))
         return raw_table
 
     @staticmethod
