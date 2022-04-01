@@ -42,11 +42,11 @@ if __name__ == '__main__':
     PROCESS_NUM = 8
 
     if rank == 0:
-
+        starttime = datetime.datetime.now()
         twitter_json_parser =  TwitterJsonParser()
         total_rows = twitter_json_parser.get_total_rows()
         send_data = get_interval(total_rows, PROCESS_NUM)
-        print("[Rank: {0}] Total rows: {1}".format(rank, total_rows))
+        # print("[Rank: {0}] Total rows: {1}".format(rank, total_rows))
 
     else:                                                                      
         send_data = None
@@ -57,11 +57,8 @@ if __name__ == '__main__':
     start_index = recv_data[0]
     total_rows_per_process = recv_data[1]
 
-    # start_index = 0
-    # total_rows_per_process = 12345
-    print("process {} recv data {}...".format(rank, recv_data))
-
-
+    start_index = 0
+    total_rows_per_process = 600000
     pool = ThreadPoolHandler(start_index=start_index, total_rows_per_process=total_rows_per_process, 
                                     test_thread_step=500, test_mode=True)
 
@@ -80,5 +77,9 @@ if __name__ == '__main__':
                 # add [:10] to get top 10
                 table[key][2] = list(sorted(table[key][2].items(), key=lambda x: x[1], reverse=True))
         LangCalcHandler.view(table)
+
+        endtime = datetime.datetime.now()
+
+        print(" Time Total: ", endtime - starttime)
 
 
