@@ -8,7 +8,7 @@ app:
   step: 500
 
   # decide to run which input file, 0-tiny, 1-small, 2-big
-  input-twitter-type: 1
+  input-twitter-type: 2
 
   # important file paths
 #  grid-path: E:\projects\COMP90024_Assignment_1\sample\sydGrid.json

@@ -41,7 +41,7 @@ if __name__ == '__main__':
     '''
     TODO: 命令行解析进程数
     '''
-    PROCESS_NUM = 3
+    PROCESS_NUM = 8
 
     if rank == 0:
 
