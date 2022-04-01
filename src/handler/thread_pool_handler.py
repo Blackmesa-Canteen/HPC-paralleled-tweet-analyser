@@ -19,7 +19,8 @@ STOP = (404,404)
 # @singleton
 class ThreadPoolHandler(object):
   
-    def __init__(self, start_index=0, process_step=100000, test_mode=False, test_queue_num=1000, test_thread_step=500):
+    def __init__(self, start_index=0, total_rows_per_process=100000, 
+                    test_thread_step=500, test_mode=False):
 
         self._config_handler = ConfigHandler()
         self._lang_tag_parser = LangTagJsonParser()
@@ -27,16 +28,22 @@ class ThreadPoolHandler(object):
         self._twitter_json_parser = TwitterJsonParser()
 
         if test_mode:
-            self._main_queue = self._twitter_json_parser.test_queue_generator(test_queue_num)
-            self._total_rows_per_proces = test_queue_num
+            self._main_queue = self._twitter_json_parser.test_queue_generator(total_rows_per_process)
             self._thread_step = test_thread_step
         else:
-            self._main_queue = self._twitter_json_parser.parse_valid_coordinate_lang_maps_in_range(start_index=start_index, step=process_step)
-            self._total_rows_per_proces = self._config_handler.get_upper_bound_rows_per_iteration()
+            self._main_queue = self._twitter_json_parser.parse_valid_coordinate_lang_maps_in_range(start_index=start_index, step=total_rows_per_process)
             self._thread_step = self._config_handler.get_step()
 
-        self._thread_nums = ceil(self._total_rows_per_proces / self._thread_step)
+        upper_bound = self._config_handler.get_upper_bound_rows_per_iteration()
+        if self._total_rows_per_process > upper_bound:
+            self._total_rows_per_process = upper_bound
 
+        self._thread_nums = ceil(self._total_rows_per_process / self._thread_step)
+
+        '''
+        TODO 在配置文件中加入单进程最大线程数量
+        PS: 线程数量过大可能会导致python解释器崩溃
+        '''
         self._thread_nums = 2000 if self._thread_nums > 2000 else self._thread_nums
         self._thread_pool = ThreadPoolExecutor(self._thread_nums)
         self._job_num = self._thread_nums

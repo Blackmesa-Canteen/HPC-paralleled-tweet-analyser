@@ -5,7 +5,7 @@ app:
   upper-bound-rows-per-iteration: 10000
 
   # how many rows one THREAD will process for calculation
-  step: 100
+  step: 500
 
   # decide to run which input file, 0-tiny, 1-small, 2-big
   input-twitter-type: 1

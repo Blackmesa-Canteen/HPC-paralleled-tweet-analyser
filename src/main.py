@@ -1,5 +1,6 @@
 # Here we will write main script with
 from cmath import polar
+from curses import noecho
 from dataclasses import dataclass
 import os
 import random
@@ -12,14 +13,11 @@ from decimal import Decimal
 
 import datetime
 from math import ceil
-from tkinter import N
-
-
+from tkinter.messagebox import NO
 
 # make single script runnable!!!
 sys.path.append(os.path.dirname(sys.path[0]))
 print('[debug] running root path:', os.path.dirname(sys.path[0]))
-
 from mpi4py import MPI
 
 from src.config.config_handler import ConfigHandler
@@ -30,6 +28,7 @@ from src.util.lang_tag_json_parser import LangTagJsonParser
 from src.util.twitter_json_parser import TwitterJsonParser
 from src.handler.thread_pool_handler import ThreadPoolHandler
 from src.handler.lang_calc_handler import LangCalcHandler
+from src.util.math_util import *
 
 
 
@@ -37,17 +36,31 @@ if __name__ == '__main__':
 
     comm = MPI.COMM_WORLD                                                      
     rank = comm.Get_rank()                                                     
-    size = comm.Get_size()                                                     
+    size = comm.Get_size()      
+    '''
+    TODO: 命令行解析进程数
+    '''
+    PROCESS_NUM = 4
 
     if rank == 0:
-        send_data = (0, 99999, 199999, 299999, 399999)
-        
+
+        twitter_json_parser =  TwitterJsonParser()
+        total_rows = twitter_json_parser.get_total_rows()
+        send_data = get_interval(total_rows, PROCESS_NUM)
+        print("[Rank: {0}] Total rows: {1}".format(rank, total_rows))
+
     else:                                                                      
         send_data = None
 
     # Per-process except rank 0
-    recv_data = comm.scatter(send_data, root=0)                                       
-    pool = ThreadPoolHandler(recv_data, test_mode=True, test_queue_num=100000, process_step=100000)
+    recv_data = comm.scatter(send_data, root=0)
+
+    start_index = recv_data[0]
+    process_step = recv_data[1]
+    print("process {} recv data {}...".format(rank, recv_data))
+    
+    pool = ThreadPoolHandler(recv_data, test_mode=True, 
+                              test_queue_num=100000, process_step=100000)
     pool.launch('lang_calc')   
     result = pool.collect_result()    
     send_data = result
@@ -58,3 +71,5 @@ if __name__ == '__main__':
         grid_parser = GridJsonParser()
         table = LangCalcHandler.table_union(recv_data, grid_parser)
         LangCalcHandler.view(table)
+
+
