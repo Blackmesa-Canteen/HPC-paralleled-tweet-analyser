@@ -26,7 +26,6 @@ from src.handler.thread_pool_handler import ThreadPoolHandler
 from src.handler.lang_calc_handler import LangCalcHandler
 from src.util.utils import Utils
 
-GAP = 0.15
 
 # The world
 comm = MPI.COMM_WORLD
@@ -114,14 +113,13 @@ if __name__ == '__main__':
     '''
     以下程序用来测试
     '''
-
     generate_start = datetime.datetime.now()
 
-    total_row = 10000000
+    total_row = 93848
     step = 500
 
     q = Utils.sample_generator(total_row)
-    
+
     generate_end = datetime.datetime.now()
     generate_time = generate_end - generate_start
 

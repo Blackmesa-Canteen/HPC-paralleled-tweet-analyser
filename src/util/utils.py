@@ -35,7 +35,7 @@ class Utils:
                     records += 1
                 except Exception as e:
                     logging.exception(e)
-                    # print("[INFO] {0} finish jobs: {1} records".format(thread_id, records))
+                    print("[EX] {0} finish jobs: {1} records".format(thread_id, records))
                     return lang_calc_handler.result()
                 # print("{0} get message: {1} and current step: {2}".format(thread_id, message, step))
             step -= 1

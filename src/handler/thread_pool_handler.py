@@ -23,8 +23,6 @@ class ThreadPoolHandler(object):
         # self._max_jobs = max_jobs
         self._thread_num = thread_num
 
-        # 
-
         self._max_threads = max_threads
 
         self._cancel_flag = False
