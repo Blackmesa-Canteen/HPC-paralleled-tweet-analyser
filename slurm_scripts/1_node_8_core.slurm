@@ -1,5 +1,5 @@
 #!/bin/bash
-#SBATCH --job-name="ass1_1_node_1_core"
+#SBATCH --job-name="ass1_1_node_8_core"
 #SBATCH --nodes=1
 #SBATCH --ntasks-per-node=8
 
