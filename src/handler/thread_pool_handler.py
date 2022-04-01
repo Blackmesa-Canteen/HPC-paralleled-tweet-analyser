@@ -19,7 +19,7 @@ STOP = (404,404)
 # @singleton
 class ThreadPoolHandler(object):
   
-    def __init__(self, start_index=0, test_mode=False, test_queue_num=1000, test_step=1000):
+    def __init__(self, start_index=0, test_mode=False, test_queue_num=1000, test_step=500):
 
         self._config_handler = ConfigHandler()
         self._lang_tag_parser = LangTagJsonParser()
@@ -37,7 +37,7 @@ class ThreadPoolHandler(object):
 
         self._thread_nums = ceil(self._total_rows / self._step)
 
-        self._thread_nums = 1000 if self._thread_nums > 1000 else self._thread_nums
+        self._thread_nums = 2000 if self._thread_nums > 2000 else self._thread_nums
         self._thread_pool = ThreadPoolExecutor(self._thread_nums)
         self._job_num = self._thread_nums
 

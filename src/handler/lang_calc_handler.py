@@ -71,7 +71,7 @@ class LangCalcHandler:
 
     @staticmethod
     def lang_calc(args):
-        
+
         thread_id = threading.current_thread().name
         print("[INFO] Thread ", thread_id, " start job")
         main_queue, step, grid_parser, lang_tag_parser = args
@@ -91,12 +91,29 @@ class LangCalcHandler:
                     records += 1
                 except Exception as e:
                     logging.exception(e)
-                    print("[EX] {0} finish jobs: {1} records".format(thread_id, records))
+                    # print("[EX] {0} finish jobs: {1} records".format(thread_id, records))
                     return lang_calc_handler.result()
                 # print("{0} get message: {1} and current step: {2}".format(thread_id, message, step))
             step -= 1
         # print("[INFO] {0} finish jobs: {1} records".format(thread_id, records))
         return lang_calc_handler.result()
 
+    @staticmethod
+    def view(final_table):
+        sum_record = 0
+        # simple visualise
+        for key in final_table.keys():
+            record = final_table[key]
+            lang_vs_num = record[2]
+            lang_types_num = record[1]
+            total_tw = record[0]
 
+            sum_record += total_tw
+            assert (len(record[2]) == lang_types_num)
+            sum = 0
+            for item in lang_vs_num:
+                sum += item[1]
+            assert (sum == total_tw)
+            print(key, ": ", final_table[key])
+        print(" Toal records: ", sum_record)
 

@@ -1,5 +1,6 @@
 # Here we will write main script with
 from cmath import polar
+from dataclasses import dataclass
 import os
 import random
 import sys
@@ -10,6 +11,8 @@ from decimal import Decimal
 
 import datetime
 from math import ceil
+from tkinter import N
+
 
 # make single script runnable!!!
 sys.path.append(os.path.dirname(sys.path[0]))
@@ -80,29 +83,14 @@ if __name__ == '__main__':
     # print(parser.get_total_rows())
 
 
+    start = datetime.datetime.now()
 
-    pool = ThreadPoolHandler(test_mode=True, test_queue_num=1000000)
+    pool = ThreadPoolHandler(test_mode=True, test_queue_num=1000000, test_step=500)
     pool.launch('lang_calc')
-    # print(pool.collect_result())
-    # print(pool.info())
+
+    end = datetime.datetime.now()
 
     final_table = pool.collect_result()
+    LangCalcHandler.view(final_table)
 
-
-    sum_record = 0
-    # simple visualise
-    for key in final_table.keys():
-        record = final_table[key]
-        lang_vs_num = record[2]
-        lang_types_num = record[1]
-        total_tw = record[0]
-
-        sum_record += total_tw
-        assert (len(record[2]) == lang_types_num)
-        sum = 0
-        for item in lang_vs_num:
-            sum += item[1]
-        assert (sum == total_tw)
-        print(key, ": ", final_table[key])
-    print(" Toal records: ", sum_record)
-    print(pool.info())
+    print("\n Time total: ", end-start)
