@@ -2,19 +2,33 @@
 import os
 import random
 import sys
+
+# make single script runnable!!!
 import time
+from decimal import Decimal
+
+import datetime
+from math import ceil
 from mpi4py import MPI
 
 # make single script runnable!!!
 sys.path.append(os.path.dirname(sys.path[0]))
 print('[debug] running root path:', os.path.dirname(sys.path[0]))
 
-import src.config.config_handler
+from mpi4py import MPI
+
+from src.config.config_handler import ConfigHandler
 from src.handler.result_gather_handler import ResultGatherHandler
 from src.handler.test_send_handler import TestSendHandler
 from src.util.grid_json_parser import GridJsonParser
 from src.util.lang_tag_json_parser import LangTagJsonParser
 from src.util.twitter_json_parser import TwitterJsonParser
+from src.handler.thread_pool_handler import ThreadPoolHandler
+from src.handler.lang_calc_handler import LangCalcHandler
+from src.util.utils import Utils
+
+
+GAP = 0.15
 
 # The world
 comm = MPI.COMM_WORLD
@@ -62,38 +76,87 @@ def multi_process_calc():
 
 
 # Press the green button in the gutter to run the script.
+
 if __name__ == '__main__':
 
-    print_hi('PyCharm')
-    config_handler = src.config.config_handler.ConfigHandler()
-    print(config_handler.get_grid_path(), " ", config_handler.get_grid_columns())
-    print('upper-bound-rows', config_handler.get_upper_bound_rows_per_iteration())
 
+    '''
+    以下为启动逻辑
+    '''
+    # init parser
+    config_handler = ConfigHandler()
     lang_tag_parser = LangTagJsonParser()
-    print(lang_tag_parser.get_tag_lang_map())
-
     grid_parser = GridJsonParser()
-    print(grid_parser.get_all_grids())
-    print(grid_parser.get_grid_by_name('B1'))
-    print(grid_parser.get_grid_by_name('B2'))
-    print(grid_parser.get_grid_by_name('B3'))
-    print(grid_parser.get_grid_by_name('B4'))
-
-    print('----------------------------------------')
-
-    print(grid_parser.get_grid_by_name('A2'))
-    print(grid_parser.get_grid_by_name('B2'))
-    print(grid_parser.get_grid_by_name('C2'))
-    print(grid_parser.get_grid_by_name('D2'))
-
     twitter_json_parser = TwitterJsonParser()
-    print(twitter_json_parser.get_total_rows())
 
-    res_queue = twitter_json_parser.parse_valid_coordinate_lang_maps_in_range(start_index=0, step=500000000)
+    # init data
+    twitter_json_parser.parse_valid_coordinate_lang_maps_in_range(start_index=0, step=500000000)
+    # records num that each thread would process
+    step = config_handler.get_step()
+    # Main queue for one process
+    main_records_queue = twitter_json_parser.get_twitter_queue()
+    # how many records for one process
+    total_row = config_handler.get_upper_bound_rows_per_iteration()
+    # threads number in thread pool
+    thread_nums = int( total_row / step)
 
-    while not res_queue.empty():
-        print(res_queue.get())
+    # # how many job in the threadpool job queue
+    # job_nums = thread_nums
 
-    # multi_process_calc()
+    # # run threadpool
+    # pool = ThreadPoolHandler(thread_nums, job_nums)
+    # args = (main_records_queue, step)
+    # pool.start('lang_calc', args)
+    # pool.stop()
 
-# See PyCharm help at https://www.jetbrains.com/help/pycharm/
+    # # collect result and view
+    # table_list = pool.collect_result()
+    # table_sum = LangCalcHandler.table_union(table_list, grid_parser)
+    # Utils.visualise(table_sum)
+
+    '''
+    以下程序用来测试
+    '''
+
+    begintime = datetime.datetime.now()
+
+    total_row = 1000000
+    step = 500
+
+    thread_nums = ceil(total_row / step)
+
+    pool = ThreadPoolHandler(thread_nums)
+    # Test random data
+
+    q = Utils.sample_generator(total_row)
+
+    # packing params
+    args = (q, step, grid_parser, lang_tag_parser)
+
+    starttime = datetime.datetime.now()
+    pool.run_task('lang_calc', args)
+    pool.stop()
+    endtime = datetime.datetime.now()
+
+    threadtime = endtime - starttime
+
+    # Collect result from multiple threads
+    table_list = pool.collect_result()
+    final_table = Utils.table_union(table_list, grid_parser)
+
+    # simple visualise
+    for key in final_table.keys():
+        record = final_table[key]
+        lang_vs_num = record[2]
+        lang_types_num = record[1]
+        total_tw = record[0]
+        assert(len(record[2]) == lang_types_num)
+        sum = 0
+        for item in lang_vs_num:
+            sum += item[1]
+        assert(sum == total_tw)
+        print(key, ": ", final_table[key])
+
+
+    lasttime = datetime.datetime.now()
+    print("[INFO] Time threadpool: ", threadtime, " Time total: ", lasttime - begintime)

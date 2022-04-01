@@ -23,7 +23,19 @@ def parse_total_rows(f):
     return result
 
 
-@singleton
+'''
+YuanZhi Shang:
+
+parser是否可以单个线程私有？对不同线程指定步长进行同时并行检索?
+
+设：进程0步长为100000条
+
+当前方法为，进程0遍历检索出对象队列后
+
+'''
+
+
+@singleton       
 class TwitterJsonParser:
 
     # A thread-safe queue to contain twitter info
@@ -121,3 +133,4 @@ class TwitterJsonParser:
 
     def test_parse_coordinates(self):
         pass
+  

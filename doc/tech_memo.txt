@@ -16,3 +16,102 @@ https://zhuanlan.zhihu.com/p/157804393
 
 slurm Chinese doc
 : https://zhuanlan.zhihu.com/p/356415669
+
+
+
+
+
+
+
+# Twitter 结构
+# {"id":"1212167199793614848",
+# "key":["sydney",2020,1,1],
+# "value":1,
+# "doc":{"_id":"1212167199793614848",
+#         "_rev":"1-144bb7aa614168777f1a499c8dd6b892",
+#         "created_at":"Wed Jan 01 00:22:36 +0000 2020",
+#         "id":1212167199793614800,
+#         "id_str":"1212167199793614848",
+#         "text":"RT @5SOS: Have an incredible new year. Thank you for an incredible decade of music, growth, happiness and challenges. \nHere’s to more music…",
+#         "truncated":false,
+#         "entities":{"hashtags":[],
+#                     "symbols":[],
+#                     "user_mentions":[{"screen_name":
+#                                         "5SOS","name":"5 Seconds of Summer",
+#                                         "id":264107729,
+#                                         "id_str":"264107729",
+#                                         "indices":[3,8]}],
+#                                         "urls":[]},
+#                                         "metadata":{"iso_language_code":"en","result_type":"recent"},
+#                                         "source":"<a href=\"http://twitter.com/download/iphone\" rel=\"nofollow\">Twitter for iPhone</a>",
+#                                         "in_reply_to_status_id":null,
+#                                         "in_reply_to_status_id_str":null,
+#                                         "in_reply_to_user_id":null,
+#                                         "in_reply_to_user_id_str":null,
+#                                         "in_reply_to_screen_name":null,
+#                                         "user":{"id":1061542997559394300,
+#                                                 "id_str":"1061542997559394305",
+#                                                 "name":"ABC Rambo",
+#                                                 "screen_name":"abc_rambo",
+#                                                 "location":"","description":"",
+#                                                 "url":null,
+#                                                 "entities":{"description":{"urls":[]}},
+#                                                 "protected":false,
+#                                                 "followers_count":64,
+#                                                 "friends_count":486,
+#                                                 "listed_count":0,
+#                                                 "created_at":"Sun Nov 11 08:55:47 +0000 2018",
+#                                                 "favourites_count":45390,
+#                                                 "utc_offset":null,
+#                                                 "time_zone":null,
+#                                                 "geo_enabled":false,
+#                                                 "verified":false,
+#                                                 "statuses_count":45483,
+#                                                 "lang":null,
+#                                                 "contributors_enabled":false,
+#                                                 "is_translator":false,
+#                                                 "is_translation_enabled":false,
+#                                                 "profile_background_color":"F5F8FA",
+#                                                 "profile_background_image_url":null,
+#                                                 "profile_background_image_url_https":null,
+#                                                 "profile_background_tile":false,
+#                                                 "profile_image_url":"http://pbs.twimg.com/profile_images/1061856433170313216/kvcT3lcB_normal.jpg",
+#                                                 "profile_image_url_https":"https://pbs.twimg.com/profile_images/1061856433170313216/kvcT3lcB_normal.jpg",
+#                                                 "profile_link_color":"1DA1F2",
+#                                                 "profile_sidebar_border_color":"C0DEED",
+#                                                 "profile_sidebar_fill_color":"DDEEF6",
+#                                                 "profile_text_color":"333333",
+#                                                 "profile_use_background_image":true,
+#                                                 "has_extended_profile":false,
+#                                                 "default_profile":true,
+#                                                 "default_profile_image":false,
+#                                                 "following":false,
+#                                                 "follow_request_sent":false,
+#                                                 "notifications":false,
+#                                                 "translator_type":"none"},
+#                                         "geo":null,
+#                                         "coordinates":null,
+#                                         "place":null,
+#                                         "contributors":null,
+#                                         "retweeted_status":{"created_at":"Tue Dec 31 20:12:25 +0000 2019",
+#                                                             "id":1212104239268290600,
+#                                                             "id_str":"1212104239268290560",
+#                                                             "text":"Have an incredible new year. Thank you for an incredible decade of music, growth, happiness and challenges. \nHere’s… https://t.co/v0dqY2UOJD",
+#                                                             "truncated":true,
+#                                                              "entities":{"hashtags":[],
+#                                                                           "symbols":[],
+#                                                                           "user_mentions":[],
+#                                                                           "urls":[{"url":"https://t.co/v0dqY2UOJD",
+#                                                                                    "expanded_url":"https://twitter.com/i/web/status/1212104239268290560",
+#                                                                                    "display_url":"twitter.com/i/web/status/1…",
+#                                                                                    "indices":[117,140]}]},
+#                                                                           "metadata":{"iso_language_code":"en",
+#                                                                                       "result_type":"recent"},
+#                                                               "source":"<a href=\"http://twitter.com/download/iphone\" rel=\"nofollow\">Twitter for iPhone</a>","in_reply_to_status_id":null,"in_reply_to_status_id_str":null,"in_reply_to_user_id":null,"in_reply_to_user_id_str":null,"in_reply_to_screen_name":null,"user":{"id":264107729,"id_str":"264107729","name":"5 Seconds of Summer","screen_name":"5SOS","location":"Sydney, Australia","description":"An Australian Band Called 5 Seconds Of Summer // TEETH // https://t.co/ExYCI8n0xI // @ashton5sos @calum5sos @michael5sos @luke5sos // email: hi@5sos.com","url":"https://t.co/Z3PbU8XeY2","entities":{"url":{"urls":[{"url":"https://t.co/Z3PbU8XeY2","expanded_url":"http://5sos.com","display_url":"5sos.com","indices":[0,23]}]},"description":{"urls":[{"url":"https://t.co/ExYCI8n0xI","expanded_url":"https://smarturl.it/Teeth5SOS","display_url":"smarturl.it/Teeth5SOS","indices":[58,81]}]}},"protected":false,"followers_count":12622502,"friends_count":29971,"listed_count":26553,"created_at":"Fri Mar 11 10:18:46 +0000 2011","favourites_count":5727,"utc_offset":null,"time_zone":null,"geo_enabled":true,"verified":true,"statuses_count":27844,"lang":null,"contributors_enabled":false,"is_translator":false,"is_translation_enabled":true,"profile_background_color":"FFFFFF","profile_background_image_url":"http://abs.twimg.com/images/themes/theme1/bg.png","profile_background_image_url_https":"https://abs.twimg.com/images/themes/theme1/bg.png","profile_background_tile":false,"profile_image_url":"http://pbs.twimg.com/profile_images/1162413269627351040/IxBWJpHU_normal.jpg","profile_image_url_https":"https://pbs.twimg.com/profile_images/1162413269627351040/IxBWJpHU_normal.jpg","profile_banner_url":"https://pbs.twimg.com/profile_banners/264107729/1565975896","profile_link_color":"C21B1B","profile_sidebar_border_color":"FFFFFF","profile_sidebar_fill_color":"DDEEF6","profile_text_color":"333333","profile_use_background_image":true,"has_extended_profile":false,"default_profile":false,"default_profile_image":false,"following":false,"follow_request_sent":false,"notifications":false,"translator_type":"regular"},"geo":null,"coordinates":null,"place":null,"contributors":null,"is_quote_status":false,"retweet_count":6526,"favorite_count":22834,"favorited":false,"retweeted":false,"possibly_sensitive":false,"lang":"en"},"is_quote_status":false,"retweet_count":6526,"favorite_count":0,"favorited":false,"retweeted":false,"lang":"en","location":"sydney"}}]}
+
+
+
+
+
+
+
