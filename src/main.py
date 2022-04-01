@@ -39,7 +39,7 @@ if __name__ == '__main__':
     '''
     TODO: 命令行解析进程数
     '''
-    PROCESS_NUM = 8
+    PROCESS_NUM = comm.Get_size()
 
     if rank == 0:
         starttime = datetime.datetime.now()
@@ -60,12 +60,14 @@ if __name__ == '__main__':
     # start_index = 0
     # total_rows_per_process = 600000
     pool = ThreadPoolHandler(start_index=start_index, total_rows_per_process=total_rows_per_process, 
-                                    test_thread_step=500, test_mode=True)
+                                    test_thread_step=500, test_mode=False)
 
     pool.launch('lang_calc')   
     result = pool.collect_result()    
     send_data = result
     recv_data = comm.gather(send_data, root=0)
+
+    print("RANK: ", rank)
 
     if rank == 0:
 
