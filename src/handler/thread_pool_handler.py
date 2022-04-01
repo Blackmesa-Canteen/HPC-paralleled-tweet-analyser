@@ -49,7 +49,6 @@ class ThreadPoolHandler(object):
         self._thread_nums = 2000 if self._thread_nums > 2000 else self._thread_nums
         self._thread_pool = ThreadPoolExecutor(self._thread_nums)
         self._job_num = self._thread_nums
-
         self._result = []
 
     def launch(self, task):

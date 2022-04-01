@@ -59,9 +59,8 @@ if __name__ == '__main__':
     start_index = recv_data[0]
     total_rows_per_process = recv_data[1]
 
-
-    start_index = 0
-    total_rows_per_process = 12345
+    # start_index = 0
+    # total_rows_per_process = 12345
     print("process {} recv data {}...".format(rank, recv_data))
 
 
