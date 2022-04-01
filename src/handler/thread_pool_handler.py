@@ -1,8 +1,19 @@
 # author: YuanZhi Shang
 
 
+from concurrent.futures import ThreadPoolExecutor
+from math import ceil
+from os import stat
+from select import select
+from src.config.config_handler import ConfigHandler
+from src.handler.lang_calc_handler import LangCalcHandler
+from src.util.grid_json_parser import GridJsonParser
+from src.util.lang_tag_json_parser import LangTagJsonParser
 from src.util.singleton_decorator import singleton
+from src.util.twitter_json_parser import TwitterJsonParser
 from src.util.utils import Utils
+
+
 
 import logging
 import queue
@@ -16,126 +27,50 @@ STOP = (404,404)
 # @singleton
 class ThreadPoolHandler(object):
   
-    def __init__(self, thread_num, max_threads=1000):
-        # object.__init__(self)
-        # Maybe useful
-        self._max_threads = max_threads
-        # self._max_jobs = max_jobs
-        self._thread_num = thread_num
+    def __init__(self, start_index=0, test_mode=False, test_queue_num=1000):
 
-        self._max_threads = max_threads
+        self._config_handler = ConfigHandler()
+        self._lang_tag_parser = LangTagJsonParser()
+        self._grid_parser = GridJsonParser()
+        self._twitter_json_parser = TwitterJsonParser()
 
-        self._cancel_flag = False
-
-        # Main data structure 
-        self._queue = queue.Queue()
-        # self._queue = queue.Queue(max_jobs)
-        self._running_threads = []
-        self._free_threads = []
-
-        # list append thread safe
-        self._collect = []
-
-    def submit(self, func, args):
-        # How jobs are defined
-        task = (func, args)
-        if self._cancel_flag == True:
-            print("[WARNING] ThreadPool is down")
-            return
-        # Start new thread
-        # if len(self._running_threads) < self._max_threads and len(self._free_threads) == 0:
-        if len(self._running_threads) < self._max_threads:
-            thread = threading.Thread(target=self.run)
-            print("[INFO] Create thread: ", thread.getName())
-            thread.start()
-        # Or use exist thread
-        self._queue.put(task)
- 
-    # All threads would call this
-    def run(self):
-        thread_id = threading.currentThread().getName()
-        # Add to busy list
-        self._running_threads.append(thread_id)
-        task = self._queue.get()
-        # Work until handler say stop
-        while task != STOP:
-            func, args = task
-            # print("[INFO] Thread: {0} get a job: {1}".format(thread_id, params))
-
-            try:
-                result = func(thread_id, args)
-                self._collect.append(result)
-            except Exception as e:
-                # print("[WARNING]Thread: {0} throw {1}".format(thread_id, e))
-                logging.exception(e)
-            # Finish one job (wether success or not)
-            self._free_threads.append(thread_id)
-            # All threads will block here if no job
-            task = self._queue.get()
-            # print("[INFO] Queue: get a job: {0}, thread: {1} run again".format(params, thread_id))
-            self._free_threads.remove(thread_id)
+        if test_mode:
+            self._main_queue = TwitterJsonParser.test_queue_generator(test_queue_num)
+            self._total_rows = test_queue_num
+        else:
+            self._main_queue = self._twitter_json_parser.parse_valid_coordinate_lang_maps_in_range(start_index=0, step=500000000)
+            self._total_rows = self._config_handler.get_upper_bound_rows_per_iteration()
         
-        self._running_threads.remove(thread_id)
-        # print("[INFO] Current thread: {0} is done".format(thread_id))
+        self._step = self._config_handler.get_step()
+        self._thread_nums = ceil(self._total_rows / self._step)
+        self._thread_pool = ThreadPoolExecutor(self._thread_nums)
+        self._job_num = self._thread_nums
 
-    # gently stop thread pool
-    def stop(self):
-        self._cancel_flag = True
-        for i in range(0, len(self._running_threads)):
-            self._queue.put(STOP)
+        self._result = []
 
-        while not (len(self._running_threads) == 0 and len(self._free_threads) == 0):
-            pass 
-
-    def check_free_thread(self):
-        return self._free_threads
-
-    def check_running_thread(self):
-        return self._running_threads
-
-    def check_state(self):
-        return "RUNNING" if self._cancel_flag == False else "DOWN"
+    def launch(self, task):
+        func = self._get_func(task)
+        args = (self._main_queue, self._step, 
+                    self._grid_parser, self._lang_tag_parser)
+        for i in range(self._job_num):
+            future = self._thread_pool.submit(func, args)
+            future.add_done_callback(self._call_back)
+        
+        self._thread_pool.shutdown(wait=True)
 
     def collect_result(self):
-        return self._collect
+        result = LangCalcHandler.table_union(self._result, self._grid_parser)
+        return result
 
-    def __str__(self):        
-        return "[INFO]\nCurrent running thread: " + str(self._running_threads) + " \n" + "Current free thread: " + str(self._free_threads) + " \n" + "Current status: " + self.check_state()
-
-    # Main execution logic
-    def run_task(self, task, args):
-        func = self._get_func(task)
-        for i in range(self._thread_num):
-            self.submit(func, args)
-    
     def _get_func(self, task):
-        if task not in dir(Utils):
+        if task not in dir(LangCalcHandler):
             raise AttributeError(task + " does not exist")
-        func = getattr(Utils, task)
+        func = getattr(LangCalcHandler, task)
         return func
 
+    def _call_back(self,future):
+        self._result.append(future.result())
 
-# Test job function
-'''
-Test function for thread pool
-'''
-def func(thread_name, jobid):
-    for i in range(0,3):
-        print("[INFO] Thread: ", thread_name, " is doing job {0}".format(jobid))
-        # time.sleep(0.1)
-    print("[INFO] Thread ", thread_name, " finish job {0}".format(jobid))
-    return jobid
-
-global_queue = queue.Queue()
-global_list = []
-
-def func2(thread_name, params):
-    for i in range(0,3):
-        print("[INFO] Thread: ", thread_name, " is doing job {0}".format(params))
-        # time.sleep(1)
-        # global_queue.put(thread_name)
-        global_list.append(thread_name)
+    def info(self):
+        return " \n ThreadNum: " + str(self._thread_nums)
     
-    print("[INFO] Thread ", thread_name, " finish job {0}".format(params))
-    # print("LIST: ", global_list)
-    return thread_name

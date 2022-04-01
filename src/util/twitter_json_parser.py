@@ -1,11 +1,15 @@
 # author: Xiaotian Li
 # desc: util for parsing input twitter json file and store some meta data(Not all, otherwise will blow up memory)
+from decimal import Decimal
 from queue import Queue
+import queue
+import random
 
 import ijson
 
 from src.config.config_handler import ConfigHandler
 from src.config.twitter_type_enum import InputTwitterType
+from src.util.lang_tag_json_parser import LangTagJsonParser
 from src.util.singleton_decorator import singleton
 
 # magic number for parsing total rows
@@ -161,4 +165,25 @@ class TwitterJsonParser:
     def test_parse_coordinates(self):
         pass
 
+    @staticmethod
+    def test_queue_generator(num):
+        x_left = 150.7655
+        x_right = 151.3655
+        y_top = -33.55412
+        y_down = -34.15412
+
+        tag_list = list(LangTagJsonParser().get_tag_lang_map())
+        q = queue.Queue()
+        while num:
+            record = {}
+            # random location
+            x = Decimal(str(random.uniform(x_left, x_right)))
+            y = Decimal(str(random.uniform(y_down, y_top)))
+            tag = tag_list[random.randint(0, len(tag_list) - 1)]
+            record['coordinates'] = [x, y]
+            record['lang_tag'] = tag
+            q.put(record)
+            num -= 1
+        return q
+    
 

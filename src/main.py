@@ -1,4 +1,5 @@
 # Here we will write main script with
+from cmath import polar
 import os
 import random
 import sys
@@ -75,28 +76,28 @@ def multi_process_calc():
 # Press the green button in the gutter to run the script.
 
 if __name__ == '__main__':
-    parser = TwitterJsonParser()
-    print(parser.get_total_rows())
+    # parser = TwitterJsonParser()
+    # print(parser.get_total_rows())
 
     '''
     以下为启动逻辑
     '''
     # init parser
-    config_handler = ConfigHandler()
-    lang_tag_parser = LangTagJsonParser()
-    grid_parser = GridJsonParser()
-    twitter_json_parser = TwitterJsonParser()
+    # config_handler = ConfigHandler()
+    # lang_tag_parser = LangTagJsonParser()
+    # grid_parser = GridJsonParser()
+    # twitter_json_parser = TwitterJsonParser()
 
-    # init data
-    twitter_json_parser.parse_valid_coordinate_lang_maps_in_range(start_index=0, step=500000000)
-    # records num that each thread would process
-    step = config_handler.get_step()
-    # Main queue for one process
-    main_records_queue = twitter_json_parser.get_twitter_queue()
-    # how many records for one process
-    total_row = config_handler.get_upper_bound_rows_per_iteration()
-    # threads number in thread pool
-    thread_nums = int(total_row / step)
+    # # init data
+    # twitter_json_parser.parse_valid_coordinate_lang_maps_in_range(start_index=0, step=500000000)
+    # # records num that each thread would process
+    # step = config_handler.get_step()
+    # # Main queue for one process
+    # main_records_queue = twitter_json_parser.get_twitter_queue()
+    # # how many records for one process
+    # total_row = config_handler.get_upper_bound_rows_per_iteration()
+    # # threads number in thread pool
+    # thread_nums = int(total_row / step)
 
     # # how many job in the threadpool job queue
     # job_nums = thread_nums
@@ -112,52 +113,59 @@ if __name__ == '__main__':
     # table_sum = LangCalcHandler.table_union(table_list, grid_parser)
     # Utils.visualise(table_sum)
 
-    '''
-    以下程序用来测试
-    '''
-    generate_start = datetime.datetime.now()
+    # '''
+    # 以下程序用来测试
+    # '''
+    # generate_start = datetime.datetime.now()
 
-    total_row = 93848
-    step = 500
+    # total_row = 93848
+    # step = 500
 
-    q = Utils.sample_generator(total_row)
+    # q = Utils.sample_generator(total_row)
 
-    generate_end = datetime.datetime.now()
-    generate_time = generate_end - generate_start
+    # generate_end = datetime.datetime.now()
+    # generate_time = generate_end - generate_start
 
-    print("[INFO] Generate test queue time: ", generate_time)
-    thread_nums = ceil(total_row / step)
-    pool = ThreadPoolHandler(thread_nums)
+    # print("[INFO] Generate test queue time: ", generate_time)
+    # thread_nums = ceil(total_row / step)
+    # pool = ThreadPoolHandler(thread_nums)
 
-    # packing params
-    args = (q, step, grid_parser, lang_tag_parser)
-    starttime = datetime.datetime.now()
-    pool.run_task('lang_calc', args)
-    pool.stop()
-    endtime = datetime.datetime.now()
-    threadtime = endtime - starttime
+    # # packing params
+    # args = (q, step, grid_parser, lang_tag_parser)
+    # starttime = datetime.datetime.now()
+    # pool.run_task('lang_calc', args)
+    # pool.stop()
+    # endtime = datetime.datetime.now()
+    # threadtime = endtime - starttime
 
-    # Collect result from multiple threads
-    table_list = pool.collect_result()
-    final_table = Utils.table_union(table_list, grid_parser)
+    # # Collect result from multiple threads
+    # table_list = pool.collect_result()
+    # final_table = Utils.table_union(table_list, grid_parser)
 
-    sum_record = 0
-    # simple visualise
-    for key in final_table.keys():
-        record = final_table[key]
-        lang_vs_num = record[2]
-        lang_types_num = record[1]
-        total_tw = record[0]
+    # sum_record = 0
+    # # simple visualise
+    # for key in final_table.keys():
+    #     record = final_table[key]
+    #     lang_vs_num = record[2]
+    #     lang_types_num = record[1]
+    #     total_tw = record[0]
 
-        sum_record += total_tw
-        assert (len(record[2]) == lang_types_num)
-        sum = 0
-        for item in lang_vs_num:
-            sum += item[1]
-        assert (sum == total_tw)
-        print(key, ": ", final_table[key])
+    #     sum_record += total_tw
+    #     assert (len(record[2]) == lang_types_num)
+    #     sum = 0
+    #     for item in lang_vs_num:
+    #         sum += item[1]
+    #     assert (sum == total_tw)
+    #     print(key, ": ", final_table[key])
 
-    lasttime = datetime.datetime.now()
+    # lasttime = datetime.datetime.now()
 
-    print("\n Time Generating queue: ", generate_time,"\n Time threadpool process: ", threadtime, " \n Time total: ", lasttime - generate_start)
-    print(" Toal records: ", sum_record)
+    # print("\n Time Generating queue: ", generate_time,"\n Time threadpool process: ", threadtime, " \n Time total: ", lasttime - generate_start)
+    # print(" Toal records: ", sum_record)
+
+
+
+    pool = ThreadPoolHandler()
+    pool.launch('lang_calc')
+    print(pool.collect_result())
+    print(pool.info())
