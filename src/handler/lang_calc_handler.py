@@ -1,6 +1,7 @@
 # author: YuanZhi Shang
 
 import logging
+from pickle import FALSE
 import threading
 from src.util.twitter_json_parser import TwitterJsonParser
 from src.config.config_handler import ConfigHandler
@@ -65,8 +66,8 @@ class LangCalcHandler:
         
         # for key in raw_table.keys():
         #     raw_table[key][1] = len(raw_table[key][1])
-        #     # add [:10] to get top 10
-        #     raw_table[key][2] = list(sorted(raw_table[key][2].items(), key=lambda x: x[1], reverse=True))
+            # add [:10] to get top 10
+            # raw_table[key][2] = list(sorted(raw_table[key][2].items(), key=lambda x: x[1], reverse=True))
         return raw_table
 
     @staticmethod
@@ -99,21 +100,25 @@ class LangCalcHandler:
         return lang_calc_handler.result()
 
     @staticmethod
-    def view(final_table):
-        sum_record = 0
+    def view(final_table, check=False):
+        total_tweets = 0
         # simple visualise
         for key in final_table.keys():
             record = final_table[key]
             lang_vs_num = record[2]
             lang_types_num = record[1]
-            total_tw = record[0]
+            tweets = record[0]
 
-            sum_record += total_tw
-            # assert (len(record[2]) == lang_types_num)
-            # sum = 0
-            # for item in lang_vs_num:
-            #     sum += int(item[1])
-            # assert (sum == total_tw)
+            total_tweets += tweets
+            if check:
+                assert (len(record[2]) == lang_types_num)
+                sum = 0
+                for lang in lang_vs_num.keys():
+                    sum += lang_vs_num[lang]
+                assert (sum == tweets)
+     
             print(key, ": ", final_table[key])
-        print(" Toal records: ", sum_record)
+
+
+        print(" Toal records: ", total_tweets)
 

@@ -35,8 +35,10 @@ class ThreadPoolHandler(object):
             self._thread_step = self._config_handler.get_step()
 
         upper_bound = self._config_handler.get_upper_bound_rows_per_iteration()
-        if self._total_rows_per_process > upper_bound:
+        if total_rows_per_process > upper_bound:
             self._total_rows_per_process = upper_bound
+        else:
+            self._total_rows_per_process = total_rows_per_process
 
         self._thread_nums = ceil(self._total_rows_per_process / self._thread_step)
 

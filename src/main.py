@@ -14,6 +14,7 @@ from decimal import Decimal
 import datetime
 from math import ceil
 from tkinter.messagebox import NO
+from tracemalloc import start
 
 # make single script runnable!!!
 sys.path.append(os.path.dirname(sys.path[0]))
@@ -40,7 +41,7 @@ if __name__ == '__main__':
     '''
     TODO: 命令行解析进程数
     '''
-    PROCESS_NUM = 4
+    PROCESS_NUM = 1
 
     if rank == 0:
 
@@ -56,11 +57,17 @@ if __name__ == '__main__':
     recv_data = comm.scatter(send_data, root=0)
 
     start_index = recv_data[0]
-    process_step = recv_data[1]
+    total_rows_per_process = recv_data[1]
+
+
+    start_index = 0
+    total_rows_per_process = 12345
     print("process {} recv data {}...".format(rank, recv_data))
-    
-    pool = ThreadPoolHandler(recv_data, test_mode=True, 
-                              test_queue_num=100000, process_step=100000)
+
+
+    pool = ThreadPoolHandler(start_index=start_index, total_rows_per_process=total_rows_per_process, 
+                                    test_thread_step=500, test_mode=True)
+
     pool.launch('lang_calc')   
     result = pool.collect_result()    
     send_data = result
@@ -69,7 +76,13 @@ if __name__ == '__main__':
     if rank == 0:
         print(len(recv_data))
         grid_parser = GridJsonParser()
+       
         table = LangCalcHandler.table_union(recv_data, grid_parser)
+        table.check(check=True)
+
+        for key in table.keys():
+            table[key][1] = len(table[key][1])
+        
         LangCalcHandler.view(table)
 
 

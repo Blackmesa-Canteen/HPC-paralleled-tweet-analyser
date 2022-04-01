@@ -2,7 +2,7 @@ app:
 
   # Max rows for one PROCESS read the file into memories each time
   # useful when we meet a bigTwitter.json but there are only 2 process
-  upper-bound-rows-per-iteration: 10000
+  upper-bound-rows-per-iteration: 100000
 
   # how many rows one THREAD will process for calculation
   step: 500
