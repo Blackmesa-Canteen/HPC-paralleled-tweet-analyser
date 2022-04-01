@@ -18,7 +18,6 @@ class Utils:
         # print("[INFO] Thread ", thread_id, " start job")
         main_queue, step, grid_parser, lang_tag_parser = args
         lang_calc_handler = LangCalcHandler(thread_id, grid_parser, lang_tag_parser)
-
         '''
         这里可能存在并发问题 
         '''
@@ -55,7 +54,6 @@ class Utils:
     @staticmethod
     def view(table):
         print("[INFO] No implementation for visualization")
-
         pass
 
     @staticmethod
@@ -90,6 +88,5 @@ class Utils:
             raw_table[key][1] = len(raw_table[key][1])
             # add [:10] to get top 10
             raw_table[key][2] = list(sorted(raw_table[key][2].items(), key=lambda x: x[1], reverse=True))
-
 
         return raw_table
