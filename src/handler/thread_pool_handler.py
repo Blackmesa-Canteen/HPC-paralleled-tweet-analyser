@@ -3,22 +3,14 @@
 
 from concurrent.futures import ThreadPoolExecutor
 from math import ceil
-from os import stat
-from select import select
 from src.config.config_handler import ConfigHandler
 from src.handler.lang_calc_handler import LangCalcHandler
 from src.util.grid_json_parser import GridJsonParser
 from src.util.lang_tag_json_parser import LangTagJsonParser
 from src.util.singleton_decorator import singleton
 from src.util.twitter_json_parser import TwitterJsonParser
-from src.util.utils import Utils
 
 
-
-import logging
-import queue
-import threading
-import time
 
 
 # A stop signal
@@ -27,7 +19,7 @@ STOP = (404,404)
 # @singleton
 class ThreadPoolHandler(object):
   
-    def __init__(self, start_index=0, test_mode=False, test_queue_num=1000):
+    def __init__(self, start_index=0, test_mode=False, test_queue_num=1000, test_step=1000):
 
         self._config_handler = ConfigHandler()
         self._lang_tag_parser = LangTagJsonParser()
@@ -35,14 +27,17 @@ class ThreadPoolHandler(object):
         self._twitter_json_parser = TwitterJsonParser()
 
         if test_mode:
-            self._main_queue = TwitterJsonParser.test_queue_generator(test_queue_num)
+            self._main_queue = self._twitter_json_parser.test_queue_generator(test_queue_num)
             self._total_rows = test_queue_num
+            self._step = test_step
         else:
             self._main_queue = self._twitter_json_parser.parse_valid_coordinate_lang_maps_in_range(start_index=0, step=500000000)
             self._total_rows = self._config_handler.get_upper_bound_rows_per_iteration()
-        
-        self._step = self._config_handler.get_step()
+            self._step = self._config_handler.get_step()
+
         self._thread_nums = ceil(self._total_rows / self._step)
+
+        self._thread_nums = 1000 if self._thread_nums > 1000 else self._thread_nums
         self._thread_pool = ThreadPoolExecutor(self._thread_nums)
         self._job_num = self._thread_nums
 
@@ -72,5 +67,5 @@ class ThreadPoolHandler(object):
         self._result.append(future.result())
 
     def info(self):
-        return " \n ThreadNum: " + str(self._thread_nums)
+        return " \n ThreadNum: " + str(self._thread_nums) + " \n threadstep: " + str(self._step)
     

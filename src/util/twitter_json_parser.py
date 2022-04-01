@@ -165,8 +165,7 @@ class TwitterJsonParser:
     def test_parse_coordinates(self):
         pass
 
-    @staticmethod
-    def test_queue_generator(num):
+    def test_queue_generator(self, num):
         x_left = 150.7655
         x_right = 151.3655
         y_top = -33.55412
