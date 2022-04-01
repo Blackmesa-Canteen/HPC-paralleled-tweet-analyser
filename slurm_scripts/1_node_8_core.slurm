@@ -6,6 +6,7 @@
 module purge
 
 module load foss/2020b
+module load python/3.8.6
 
 pip3 install ijson --user
 pip3 install mpi4py --user
