@@ -77,7 +77,7 @@ class LangCalcHandler:
     def lang_calc(args):
 
         thread_id = threading.current_thread().name
-        print("[INFO] Thread ", thread_id, " start job")
+        # print("[INFO] Thread ", thread_id, " start job")
         main_queue, step, grid_parser, lang_tag_parser = args
         lang_calc_handler = LangCalcHandler(grid_parser, lang_tag_parser)
 
@@ -94,7 +94,7 @@ class LangCalcHandler:
                     lang_calc_handler.handle(message)
                     records += 1
                 except Exception as e:
-                    logging.exception(e)
+                    # logging.exception(e)
                     # print("[EX] {0} finish jobs: {1} records".format(thread_id, records))
                     return lang_calc_handler.result()
                 # print("{0} get message: {1} and current step: {2}".format(thread_id, message, step))
@@ -120,7 +120,7 @@ class LangCalcHandler:
                     sum += lang_vs_num[lang]
                 assert (sum == tweets)
      
-            print(key, ": ", final_table[key])
+            print(key, ": ", final_table[key], "\n")
 
 
         print(" Toal records: ", total_tweets)
