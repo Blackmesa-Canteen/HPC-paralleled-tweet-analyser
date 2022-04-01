@@ -1,7 +1,7 @@
 # author: YuanZhi Shang
 
 import logging
-from pickle import FALSE
+
 import threading
 from src.util.twitter_json_parser import TwitterJsonParser
 from src.config.config_handler import ConfigHandler

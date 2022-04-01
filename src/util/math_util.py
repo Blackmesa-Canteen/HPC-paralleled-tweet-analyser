@@ -7,8 +7,6 @@
 # 注意，点在矩形边缘也算作在这个矩形上，这是为了方便考虑边界情况设计的
 # 当一个点在两个矩形的公共边上，需用下方的几个函数，结合作业要求判断该点属于哪个矩形
 from math import ceil
-from turtle import right
-
 
 def is_point_in_box(poi, sbox, toler=0.0001):
     # sbox=[[x1,y1],[x2,y2]]
