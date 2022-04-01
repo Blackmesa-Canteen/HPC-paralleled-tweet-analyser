@@ -5,6 +5,7 @@ from queue import Queue
 import ijson
 
 from src.config.config_handler import ConfigHandler
+from src.config.twitter_type_enum import InputTwitterType
 from src.util.singleton_decorator import singleton
 
 # magic number for parsing total rows
@@ -12,15 +13,42 @@ TOTAL_ROWS_START_INDEX = 14
 
 
 # static function for parsing the line 1 of the file
-def parse_total_rows(f):
-    # try to parse the total row number
-    line = f.readline()
-    line = line[TOTAL_ROWS_START_INDEX:]
-    comma_index = 0
-    while line[comma_index] != ',':
-        comma_index += 1
-    result = int(line[:comma_index])
-    return result
+def parse_total_rows(f, twitter_type):
+
+    if twitter_type != InputTwitterType.BIG:
+        # try to parse the total row number
+        line = f.readline()
+        line = line[TOTAL_ROWS_START_INDEX:]
+
+        comma_index = 0
+        while line[comma_index] != ',':
+            comma_index += 1
+        result = int(line[:comma_index])
+        return result
+
+    else:
+        line = f.readline()
+        line = line[TOTAL_ROWS_START_INDEX:]
+
+        comma_index = 0
+        while line[comma_index] != ',':
+            comma_index += 1
+
+        total_rows = int(line[:comma_index])
+
+        offset_ptr = comma_index
+        while line[offset_ptr] != ':':
+            offset_ptr += 1
+        # move the pointer to the offset number
+        offset_ptr += 1
+
+        offset_end_ptr = offset_ptr
+        while line[offset_end_ptr] != ',':
+            offset_end_ptr += 1
+
+        offset = int(line[offset_ptr:offset_end_ptr])
+
+        return total_rows - offset
 
 
 '''
@@ -46,10 +74,11 @@ class TwitterJsonParser:
         config_handler = ConfigHandler()
 
         self.__input_file_path = config_handler.get_twitter_path()
+        self.__input_file_type = config_handler.get_input_twitter_type()
 
         # get total lines
         with open(self.__input_file_path, 'r', encoding='utf-8') as f:
-            self.__total_rows = parse_total_rows(f)
+            self.__total_rows = parse_total_rows(f, self.__input_file_type)
 
     # TODO 这是你可能会用到的实例方法，给定开始行和步长，从twitter文件中解析出坐标和 lang_tag的对象线程安全的队列
     # 这个方法解析出来的队列用于单节点下的一个进程使用的， 可以多读一点。而配置文件里的step， 是一个进程下每个线程在这个队列消费多少数据进行计算的数目。
@@ -133,4 +162,5 @@ class TwitterJsonParser:
 
     def test_parse_coordinates(self):
         pass
-  
+
+

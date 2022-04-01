@@ -75,6 +75,8 @@ def multi_process_calc():
 # Press the green button in the gutter to run the script.
 
 if __name__ == '__main__':
+    parser = TwitterJsonParser()
+    print(parser.get_total_rows())
 
     '''
     以下为启动逻辑
