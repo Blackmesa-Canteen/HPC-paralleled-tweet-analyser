@@ -1,5 +1,6 @@
 
 # author: YuanZhi Shang
+import logging
 import queue
 import random
 from decimal import Decimal
@@ -22,16 +23,23 @@ class Utils:
         '''
         这里可能存在并发问题 
         '''
+        records = 0
+
         while step != 0:
-            # Lock..acquire()
             if main_queue.empty():
                 break
             else:
-                message = main_queue.get()
-                lang_calc_handler.handle(message)
-
+                try:
+                    message = main_queue.get(block=False)
+                    lang_calc_handler.handle(message)
+                    records += 1
+                except Exception as e:
+                    logging.exception(e)
+                    # print("[INFO] {0} finish jobs: {1} records".format(thread_id, records))
+                    return lang_calc_handler.result()
+                # print("{0} get message: {1} and current step: {2}".format(thread_id, message, step))
             step -= 1
-
+        # print("[INFO] {0} finish jobs: {1} records".format(thread_id, records))
         return lang_calc_handler.result()
 
     @staticmethod
