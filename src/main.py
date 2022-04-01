@@ -13,8 +13,6 @@ from decimal import Decimal
 
 import datetime
 from math import ceil
-from tkinter.messagebox import NO
-from tracemalloc import start
 
 # make single script runnable!!!
 sys.path.append(os.path.dirname(sys.path[0]))
@@ -41,7 +39,7 @@ if __name__ == '__main__':
     '''
     TODO: 命令行解析进程数
     '''
-    PROCESS_NUM = 3
+    PROCESS_NUM = 8
 
     if rank == 0:
 
