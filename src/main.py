@@ -9,7 +9,6 @@ from decimal import Decimal
 
 import datetime
 from math import ceil
-from mpi4py import MPI
 
 # make single script runnable!!!
 sys.path.append(os.path.dirname(sys.path[0]))
@@ -26,7 +25,6 @@ from src.util.twitter_json_parser import TwitterJsonParser
 from src.handler.thread_pool_handler import ThreadPoolHandler
 from src.handler.lang_calc_handler import LangCalcHandler
 from src.util.utils import Utils
-
 
 GAP = 0.15
 
@@ -79,7 +77,6 @@ def multi_process_calc():
 
 if __name__ == '__main__':
 
-
     '''
     以下为启动逻辑
     '''
@@ -98,7 +95,7 @@ if __name__ == '__main__':
     # how many records for one process
     total_row = config_handler.get_upper_bound_rows_per_iteration()
     # threads number in thread pool
-    thread_nums = int( total_row / step)
+    thread_nums = int(total_row / step)
 
     # # how many job in the threadpool job queue
     # job_nums = thread_nums
@@ -150,13 +147,12 @@ if __name__ == '__main__':
         lang_vs_num = record[2]
         lang_types_num = record[1]
         total_tw = record[0]
-        assert(len(record[2]) == lang_types_num)
+        assert (len(record[2]) == lang_types_num)
         sum = 0
         for item in lang_vs_num:
             sum += item[1]
-        assert(sum == total_tw)
+        assert (sum == total_tw)
         print(key, ": ", final_table[key])
-
 
     lasttime = datetime.datetime.now()
     print("[INFO] Time threadpool: ", threadtime, " Time total: ", lasttime - begintime)

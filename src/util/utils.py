@@ -22,10 +22,15 @@ class Utils:
         '''
         这里可能存在并发问题 
         '''
-        while not main_queue.empty():
+        while step != 0:
             # Lock..acquire()
-            message = main_queue.get(timeout)
-            lang_calc_handler.handle(message)
+            if main_queue.empty():
+                break
+            else:
+                message = main_queue.get()
+                lang_calc_handler.handle(message)
+
+            step -= 1
 
         return lang_calc_handler.result()
 
