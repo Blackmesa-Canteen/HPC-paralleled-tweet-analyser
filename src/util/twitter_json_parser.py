@@ -62,7 +62,6 @@ parser是否可以单个线程私有？对不同线程指定步长进行同时�
 
 '''
 
-
 @singleton       
 class TwitterJsonParser:
 
@@ -101,14 +100,13 @@ class TwitterJsonParser:
         if step < 0:
             print('[WARN] step is less than 0, no output of parse_valid_coordinate_lang')
             return None
-
+            
         # decide scanning range
         # delta between start and uppermost index
         delta = upper_bound_index - start_index
         end_index = upper_bound_index
         if step <= delta:
             end_index = start_index + step
-
         '''
         parse twitter Json
         
