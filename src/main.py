@@ -73,7 +73,7 @@ if __name__ == '__main__':
         for key in table.keys():
                 table[key][1] = len(table[key][1])
                 # add [:10] to get top 10
-                table[key][2] = list(sorted(table[key][2].items(), key=lambda x: x[1], reverse=True))
+                table[key][2] = list(sorted(table[key][2].items(), key=lambda x: x[1], reverse=True))[:10]
         LangCalcHandler.view(table)
         endtime = datetime.datetime.now()
 
