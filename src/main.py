@@ -39,7 +39,7 @@ if __name__ == '__main__':
     '''
     TODO: 命令行解析进程数
     '''
-    PROCESS_NUM = comm.Get_size()
+    PROCESS_NUM = size
 
     if rank == 0:
         starttime = datetime.datetime.now()
