@@ -33,7 +33,8 @@ class ThreadPoolHandler(object):
             self._thread_step = test_thread_step
         else:
             starttime = datetime.datetime.now()
-            self._main_queue = self._twitter_json_parser.parse_valid_coordinate_lang_maps_in_range(start_index=start_index, step=total_rows_per_process)
+            # self._main_queue = self._twitter_json_parser.parse_valid_coordinate_lang_maps_in_range(start_index=start_index, step=total_rows_per_process)\
+            self._main_queue = self._twitter_json_parser.parse_valid_coordinate_lang_maps_in_range_v2(start_index=start_index, step=total_rows_per_process)
             endtime = datetime.datetime.now()
             print("[INFO] Parsing Time cost: ", endtime - starttime, " rank: ", comm.Get_rank())
             self._thread_step = self._config_handler.get_step()

@@ -1,6 +1,8 @@
 # author: Xiaotian Li
 # desc: util for parsing input twitter json file and store some meta data(Not all, otherwise will blow up memory)
 from decimal import Decimal
+import json
+import logging
 from queue import Queue
 import queue
 import random
@@ -150,6 +152,79 @@ class TwitterJsonParser:
                     break
 
         return self.__twitter_queue
+
+
+    def parse_valid_coordinate_lang_maps_in_range_v2(self, start_index, step):
+        upper_bound_index = self.__total_rows - 2
+
+        # check
+        if start_index > upper_bound_index or start_index < 0:
+            print('[ERR] start_index of parse_valid_coordinate_lang is out of bound!')
+            return None
+
+        if step < 0:
+            print('[WARN] step is less than 0, no output of parse_valid_coordinate_lang')
+            return None
+            
+        # decide scanning range
+        # delta between start and uppermost index
+        delta = upper_bound_index - start_index
+        end_index = upper_bound_index
+        if step <= delta:
+            end_index = start_index + step
+        '''
+        parse twitter Json
+        
+        condition: 1. coordinate is not null
+                   2. language tag is not null or und
+        '''
+        index = 0
+        with open(self.__input_file_path, 'r', encoding='utf-8') as f:
+            f.readline()
+            try:
+                print("Start index: ", start_index, " End index: ", end_index)
+                while index <= end_index:
+
+                    
+                    if index <  start_index:
+                        line = f.readline()
+                        index += 1
+                        continue
+
+                    line = f.readline()
+                
+                    # line = line.replace(',', '')
+                    line = line.strip()
+                    # print("FINAL:", line[len(line) - 1])
+
+                    line = line[:len(line) - 1]
+                    # print(line)
+                    obj = json.loads(line)
+
+                    coordinates = obj['doc']['coordinates']
+                    lang_tag = obj['doc']['metadata']['iso_language_code']
+
+                    # condition 1
+                    has_coordinate = coordinates is not None
+
+                    # condition 2
+                    has_correct_lang_tag = lang_tag is not None and lang_tag != 'und'
+
+                    if has_coordinate and has_correct_lang_tag:
+                        point = coordinates['coordinates']
+                        wrapper = {'coordinates': point, 'lang_tag': lang_tag}
+                        self.__twitter_queue.put(wrapper)
+                index += 1
+                
+            except Exception as e:
+                logging.exception(e)
+                pass
+
+
+
+        print("[DEBUG] is queue empty: ", self.__twitter_queue.empty())
+        return self.__twitter_queue
+
 
     # TODO 这是你可能会用到的实例方法，得到当前twitter文档的总行数
     def get_total_rows(self):

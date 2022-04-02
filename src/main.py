@@ -53,6 +53,7 @@ if __name__ == '__main__':
 
     # Per-process except rank 0
     recv_data = comm.scatter(send_data, root=0)
+
     start_index = recv_data[0]
     total_rows_per_process = recv_data[1]
 
@@ -60,7 +61,7 @@ if __name__ == '__main__':
     # total_rows_per_process = 600000
     pool = ThreadPoolHandler(start_index=start_index, total_rows_per_process=total_rows_per_process, 
                                     test_thread_step=500, test_mode=False)
-
+                                    
     pool.launch('lang_calc')   
     result = pool.collect_result()    
     send_data = result
