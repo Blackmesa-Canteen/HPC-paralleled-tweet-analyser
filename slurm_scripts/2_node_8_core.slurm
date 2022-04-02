@@ -2,7 +2,8 @@
 #SBATCH --job-name="ass1_2_node_8_core"
 #SBATCH --nodes=2
 #SBATCH --ntasks-per-node=4
-#SBATCH --output=%j.out
+#SBATCH --output=R-%x.%j.out
+#SBATCH --error=R-%x.%j.err
 module purge
 
 module load foss/2020b
