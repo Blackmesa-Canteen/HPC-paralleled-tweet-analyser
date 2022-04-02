@@ -53,7 +53,6 @@ if __name__ == '__main__':
 
     # Per-process except rank 0
     recv_data = comm.scatter(send_data, root=0)
-
     start_index = recv_data[0]
     total_rows_per_process = recv_data[1]
 
@@ -66,7 +65,6 @@ if __name__ == '__main__':
     result = pool.collect_result()    
     send_data = result
     recv_data = comm.gather(send_data, root=0)
-
     # print("RANK: ", rank)
 
     if rank == 0:
@@ -79,7 +77,6 @@ if __name__ == '__main__':
                 # add [:10] to get top 10
                 table[key][2] = list(sorted(table[key][2].items(), key=lambda x: x[1], reverse=True))
         LangCalcHandler.view(table)
-
         endtime = datetime.datetime.now()
 
         print(" Time Total: ", endtime - starttime)

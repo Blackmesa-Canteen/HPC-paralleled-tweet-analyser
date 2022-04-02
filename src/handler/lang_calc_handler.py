@@ -121,7 +121,5 @@ class LangCalcHandler:
                 assert (sum == tweets)
      
             print(key, ": ", final_table[key], "\n")
-
-
         print(" Toal records: ", total_tweets)
 

@@ -10,9 +10,9 @@ from src.util.grid_json_parser import GridJsonParser
 from src.util.lang_tag_json_parser import LangTagJsonParser
 from src.util.singleton_decorator import singleton
 from src.util.twitter_json_parser import TwitterJsonParser
+from mpi4py import MPI
 
-
-
+comm = MPI.COMM_WORLD    
 
 # A stop signal
 STOP = (404,404)
@@ -35,8 +35,7 @@ class ThreadPoolHandler(object):
             starttime = datetime.datetime.now()
             self._main_queue = self._twitter_json_parser.parse_valid_coordinate_lang_maps_in_range(start_index=start_index, step=total_rows_per_process)
             endtime = datetime.datetime.now()
-
-            print("[INFO] Parsing Time cost: ", endtime - starttime)
+            print("[INFO] Parsing Time cost: ", endtime - starttime, " rank: ", comm.Get_rank())
             self._thread_step = self._config_handler.get_step()
 
         upper_bound = self._config_handler.get_upper_bound_rows_per_iteration()
