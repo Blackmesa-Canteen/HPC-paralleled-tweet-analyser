@@ -39,13 +39,12 @@ if __name__ == '__main__':
     '''
     TODO: 命令行解析进程数
     '''
-    PROCESS_NUM = 8
 
     if rank == 0:
         starttime = datetime.datetime.now()
         twitter_json_parser =  TwitterJsonParser()
         total_rows = twitter_json_parser.get_total_rows()
-        send_data = get_interval(total_rows, PROCESS_NUM)
+        send_data = get_interval(total_rows, size)
         # print("[Rank: {0}] Total rows: {1}".format(rank, total_rows))
 
     else:                                                                      
@@ -60,7 +59,7 @@ if __name__ == '__main__':
     # start_index = 0
     # total_rows_per_process = 600000
     pool = ThreadPoolHandler(start_index=start_index, total_rows_per_process=total_rows_per_process, 
-                                    test_thread_step=500, test_mode=True)
+                                    test_thread_step=500, test_mode=False)
 
     pool.launch('lang_calc')   
     result = pool.collect_result()    
