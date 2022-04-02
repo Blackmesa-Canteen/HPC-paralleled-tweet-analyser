@@ -191,13 +191,13 @@ class TwitterJsonParser:
 
                     line = f.readline()
                     line = line.strip()
-                    line = line[:len(line) - 1]
+                    line = line.rstrip(',')
                     
-                    if index == end_index:
-                        line = line[:len(line) - 1]
-                        print(line)
+                    if index == upper_bound_index:
+                        line = line.rstrip('}')
+                        line = line.rstrip(']')
 
-                    print(index)
+
                     obj = json.loads(line)
                     coordinates = obj['doc']['coordinates']
                     lang_tag = obj['doc']['metadata']['iso_language_code']
@@ -216,11 +216,12 @@ class TwitterJsonParser:
                 
             except Exception as e:
                 logging.exception(e)
+                print("[ERROR] Index: ", index)
                 pass
 
 
 
-        print("[DEBUG] is queue empty: ", self.__twitter_queue.empty())
+        # print("[DEBUG] is queue empty: ", self.__twitter_queue.empty())
         return self.__twitter_queue
 
 
