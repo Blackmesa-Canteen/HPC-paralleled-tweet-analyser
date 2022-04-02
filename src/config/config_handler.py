@@ -11,11 +11,9 @@ import yaml
 
 @singleton
 class ConfigHandler:
-
     # init configs while constructing the object
     def __init__(self):
         # note: this path is based on the first caller of the constructor, not based on config_handler.py
-
         # get root path of the project
         path_util = PathUtil()
         root_path = path_util.get_root_path()
