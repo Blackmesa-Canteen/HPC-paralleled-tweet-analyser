@@ -11,16 +11,16 @@ app:
 
   # important file paths
 #  grid-path: E:\projects\COMP90024_Assignment_1\sample\sydGrid.json
-  # grid-path: /data/projects/COMP90024/sydGrid.json
-  grid-path: /home/yuan/CCCCOMP90024/COMP90024_Assignment_1/sample/sydGrid.json
+  grid-path: /data/projects/COMP90024/sydGrid.json
+  # grid-path: /home/yuan/CCCCOMP90024/COMP90024_Assignment_1/sample/sydGrid.json
 
 #  tiny-twitter-path: E:\projects\COMP90024_Assignment_1\sample\tinyTwitter.json
-  # tiny-twitter-path: /data/projects/COMP90024/tinyTwitter.json
-  tiny-twitter-path: /home/yuan/CCCCOMP90024/COMP90024_Assignment_1/sample/tinyTwitter.json
+  tiny-twitter-path: /data/projects/COMP90024/tinyTwitter.json
+  # tiny-twitter-path: /home/yuan/CCCCOMP90024/COMP90024_Assignment_1/sample/tinyTwitter.json
 
 #  small-twitter-path: E:\projects\COMP90024_Assignment_1\sample\smallTwitter.json
-  # small-twitter-path: //data/projects/COMP90024/smallTwitter.json
-  small-twitter-path: /home/yuan/CCCCOMP90024/COMP90024_Assignment_1/sample/smallTwitter.json
+  small-twitter-path: //data/projects/COMP90024/smallTwitter.json
+  # small-twitter-path: /home/yuan/CCCCOMP90024/COMP90024_Assignment_1/sample/smallTwitter.json
 
 #  big-twitter-path: E:\projects\COMP90024_Assignment_1\sample\bigTwitter.json
   big-twitter-path: /data/projects/COMP90024/bigTwitter.json

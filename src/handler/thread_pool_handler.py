@@ -60,6 +60,7 @@ class ThreadPoolHandler(object):
             future.add_done_callback(self._call_back)
         
         self._thread_pool.shutdown(wait=True)
+        print("[INFO] Process {0} process {1} records".format(comm.Get_rank(), self._total_rows_per_process))
 
     def collect_result(self):
         result = LangCalcHandler.table_union(self._result, self._grid_parser)
