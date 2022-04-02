@@ -59,6 +59,8 @@ if __name__ == '__main__':
 
     # start_index = 0
     # total_rows_per_process = 600000
+
+    print("[INFO] Start index: ", start_index, "Step: ", total_rows_per_process, " Rank: ", rank)
     pool = ThreadPoolHandler(start_index=start_index, total_rows_per_process=total_rows_per_process, 
                                     test_thread_step=500, test_mode=False)
                                     
