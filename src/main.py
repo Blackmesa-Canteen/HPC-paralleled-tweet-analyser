@@ -45,7 +45,7 @@ if __name__ == '__main__':
         starttime = datetime.datetime.now()
         twitter_json_parser =  TwitterJsonParser()
         total_rows = twitter_json_parser.get_total_rows()
-        send_data = get_interval(total_rows, PROCESS_NUM)
+        send_data = get_interval(total_rows, size)
         # print("[Rank: {0}] Total rows: {1}".format(rank, total_rows))
 
     else:                                                                      
