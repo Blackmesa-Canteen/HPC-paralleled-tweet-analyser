@@ -184,23 +184,21 @@ class TwitterJsonParser:
             try:
                 print("Start index: ", start_index, " End index: ", end_index)
                 while index <= end_index:
-
-                    
                     if index <  start_index:
                         line = f.readline()
                         index += 1
                         continue
 
                     line = f.readline()
-                
-                    # line = line.replace(',', '')
                     line = line.strip()
-                    # print("FINAL:", line[len(line) - 1])
-
                     line = line[:len(line) - 1]
-                    # print(line)
-                    obj = json.loads(line)
+                    
+                    if index == end_index:
+                        line = line[:len(line) - 1]
+                        print(line)
 
+                    print(index)
+                    obj = json.loads(line)
                     coordinates = obj['doc']['coordinates']
                     lang_tag = obj['doc']['metadata']['iso_language_code']
 
@@ -214,7 +212,7 @@ class TwitterJsonParser:
                         point = coordinates['coordinates']
                         wrapper = {'coordinates': point, 'lang_tag': lang_tag}
                         self.__twitter_queue.put(wrapper)
-                index += 1
+                    index += 1
                 
             except Exception as e:
                 logging.exception(e)
