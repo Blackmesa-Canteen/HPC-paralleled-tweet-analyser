@@ -178,11 +178,12 @@ class TwitterJsonParser:
 
                     line = f.readline()
                     line = line.strip()
-                    line = line.rstrip(',')
-                    
                     if index == upper_bound_index:
                         line = line.rstrip('}')
                         line = line.rstrip(']')
+                    else:
+
+                        line = line.rstrip(',')
 
                     obj = json.loads(line)
                     coordinates = obj['doc']['coordinates']

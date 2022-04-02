@@ -13,8 +13,6 @@ comm = MPI.COMM_WORLD
 class LangCalcHandler:
 
     def __init__(self, grid_parser, lang_parser):
-
-
         self._thread_id = threading.current_thread().name
         self._table = grid_parser.get_raw_table()
         self._grid_parser = grid_parser
@@ -99,6 +97,8 @@ class LangCalcHandler:
 
     @staticmethod
     def view(final_table, check=False):
+
+        print ("\nOUTPUT: \n{:<5} {:<5} {:<5} {:<10}".format('Cell','#Total Tweets','#Number of Languages Used', '#Top 10 Languages & #Tweets)'))
         total_tweets = 0
         # simple visualise
         for key in final_table.keys():
@@ -114,7 +114,16 @@ class LangCalcHandler:
                 for lang in lang_vs_num.keys():
                     sum += lang_vs_num[lang]
                 assert (sum == tweets)
-     
-            print(key, ": ", final_table[key], "\n")
+            
+            records_list = final_table[key]
+            
+            TotalTweets = records_list[0]
+            NumberOfLanguage = records_list[1]
+            TOPTENLang = records_list[2]
+
+            # print(key, ": ", final_table[key], "\n")
+            print ("{0}     {1}     {2}     {3}".format(key, TotalTweets, NumberOfLanguage, TOPTENLang))
+
+
         print(" Toal records: ", total_tweets)
 
