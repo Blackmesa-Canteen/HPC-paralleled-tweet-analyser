@@ -77,7 +77,7 @@ class LangCalcHandler:
     def lang_calc(args):
 
         thread_id = threading.current_thread().name
-        print("[INFO] Thread ", thread_id, " start job")
+        # print("[INFO] Thread ", thread_id, " start job")
         main_queue, step, grid_parser, lang_tag_parser = args
         lang_calc_handler = LangCalcHandler(grid_parser, lang_tag_parser)
 

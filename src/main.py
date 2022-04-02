@@ -67,7 +67,7 @@ if __name__ == '__main__':
     send_data = result
     recv_data = comm.gather(send_data, root=0)
 
-    print("RANK: ", rank)
+    # print("RANK: ", rank)
 
     if rank == 0:
 
