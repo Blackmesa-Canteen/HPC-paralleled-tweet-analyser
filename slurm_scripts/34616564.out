@@ -1,0 +1,84 @@
+The following modules were not unloaded:
+  (Use "module --force purge" to unload all):
+
+  1) showq/0.15   2) slurm/latest
+Requirement already satisfied: ijson in /home/yuanzhis/.local/lib/python3.8/site-packages (3.1.4)
+Requirement already satisfied: mpi4py in /home/yuanzhis/.local/lib/python3.8/site-packages (3.1.3)
+Requirement already satisfied: PyYAML in /home/yuanzhis/.local/lib/python3.8/site-packages (6.0)
+[debug] running root path: /home/yuanzhis/A1/COMP90024_Assignment_1
+[debug] running root path: /home/yuanzhis/A1/COMP90024_Assignment_1
+[debug] running root path: /home/yuanzhis/A1/COMP90024_Assignment_1
+[debug] running root path: /home/yuanzhis/A1/COMP90024_Assignment_1
+[debug] running root path: /home/yuanzhis/A1/COMP90024_Assignment_1
+[debug] running root path: /home/yuanzhis/A1/COMP90024_Assignment_1
+[debug] running root path: /home/yuanzhis/A1/COMP90024_Assignment_1
+[debug] running root path: /home/yuanzhis/A1/COMP90024_Assignment_1
+[DEBUG] config path: /home/yuanzhis/A1/COMP90024_Assignment_1/src/config.yml
+[debug] loaded cfg, big_twitter_path is:  /data/projects/COMP90024/bigTwitter.json
+[INFO] Start index:  625 Step:  625  Rank:  1
+[DEBUG] config path: /home/yuanzhis/A1/COMP90024_Assignment_1/src/config.yml
+[INFO] Start index:  2500 Step:  625  Rank:  4
+[DEBUG] config path: /home/yuanzhis/A1/COMP90024_Assignment_1/src/config.yml
+[INFO] Start index:  4375 Step:  625  Rank:  7
+[DEBUG] config path: /home/yuanzhis/A1/COMP90024_Assignment_1/src/config.yml
+[INFO] Start index:  1875 Step:  625  Rank:  3
+[DEBUG] config path: /home/yuanzhis/A1/COMP90024_Assignment_1/src/config.yml
+[INFO] Start index:  3750 Step:  625  Rank:  6
+[DEBUG] config path: /home/yuanzhis/A1/COMP90024_Assignment_1/src/config.yml
+[INFO] Start index:  1250 Step:  625  Rank:  2
+[DEBUG] config path: /home/yuanzhis/A1/COMP90024_Assignment_1/src/config.yml
+[INFO] Start index:  3125 Step:  625  Rank:  5
+[DEBUG] config path: /home/yuanzhis/A1/COMP90024_Assignment_1/src/config.yml
+[INFO] Start index:  0 Step:  625  Rank:  0
+[debug] loaded cfg, big_twitter_path is:  /data/projects/COMP90024/bigTwitter.json
+[debug] loaded cfg, big_twitter_path is:  /data/projects/COMP90024/bigTwitter.json
+[debug] loaded cfg, big_twitter_path is:  /data/projects/COMP90024/bigTwitter.json
+[debug] loaded cfg, big_twitter_path is:  /data/projects/COMP90024/bigTwitter.json
+[debug] loaded cfg, big_twitter_path is:  /data/projects/COMP90024/bigTwitter.json
+Start index:  0  End index:  625
+[debug] loaded cfg, big_twitter_path is:  /data/projects/COMP90024/bigTwitter.json
+[debug] loaded cfg, big_twitter_path is:  /data/projects/COMP90024/bigTwitter.json
+Start index:  3750  End index:  4375
+Start index:  625  End index:  1250
+Start index:  4375  End index:  4998
+Start index:  1875  End index:  2500
+Start index:  2500  End index:  3125
+Start index:  1250  End index:  1875
+Start index:  3125  End index:  3750
+[INFO] Parsing Time cost:  0:00:00.048257  rank:  0
+[INFO] Process 0 process 625 records
+[INFO] Parsing Time cost:  0:00:00.064553  rank:  1
+[INFO] Process 1 process 625 records
+[INFO] Parsing Time cost:  0:00:00.078617  rank:  2
+[INFO] Process 2 process 625 records
+[INFO] Parsing Time cost:  0:00:00.092418  rank:  3
+[INFO] Process 3 process 625 records
+[INFO] Parsing Time cost:  0:00:00.107466  rank:  4
+[INFO] Process 4 process 625 records
+[INFO] Parsing Time cost:  0:00:00.116981  rank:  5
+[INFO] Process 5 process 625 records
+[INFO] Parsing Time cost:  0:00:00.129001  rank:  6
+[INFO] Process 6 process 625 records
+[INFO] Parsing Time cost:  0:00:00.144447  rank:  7
+
+OUTPUT: 
+Cell  #Total Tweets #Number of Languages Used #Top 10 Languages & #Tweets)
+A1     0     0     []
+B1     0     0     []
+C1     0     0     []
+D1     0     0     []
+A2     0     0     []
+B2     2     1     [('English', 2)]
+C2     0     0     []
+D2     0     0     []
+A3     0     0     []
+B3     2     1     [('English', 2)]
+C3     10     1     [('English', 10)]
+D3     0     0     []
+A4     0     0     []
+B4     0     0     []
+C4     1     1     [('English', 1)]
+D4     0     0     []
+ Toal records:  15
+ Time Total:  0:00:00.160227
+[INFO] Process 7 process 625 records
