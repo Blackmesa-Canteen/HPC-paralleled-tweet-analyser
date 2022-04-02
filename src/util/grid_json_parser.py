@@ -49,7 +49,7 @@ class GridJsonParser:
                     index += 1
 
     '''
-    yuanzhis: input a tuple coordinate, return a area tag
+    input a tuple coordinate, return a area tag
     '''
     def which_grid(self,pos):
         grids = self.__grids
@@ -98,6 +98,9 @@ class GridJsonParser:
     
     '''
     Table format
+    e.g.
+    cell  tweets_num  lang_num   top10-lang
+    'A1':    num        set()      {}
     '''
     def get_raw_table(self):
         raw_table = {}

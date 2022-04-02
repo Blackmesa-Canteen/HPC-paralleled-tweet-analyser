@@ -56,18 +56,6 @@ def parse_total_rows(f, twitter_type):
 
         return total_rows - offset
 
-
-'''
-YuanZhi Shang:
-
-parser是否可以单个线程私有？对不同线程指定步长进行同时并行检索?
-
-设：进程0步长为100000条
-
-当前方法为，进程0遍历检索出对象队列后
-
-'''
-
 @singleton       
 class TwitterJsonParser:
 
@@ -84,9 +72,6 @@ class TwitterJsonParser:
         # get total lines
         with open(self.__input_file_path, 'r', encoding='utf-8') as f:
             self.__total_rows = parse_total_rows(f, self.__input_file_type)
-
-    # TODO 这是你可能会用到的实例方法，给定开始行和步长，从twitter文件中解析出坐标和 lang_tag的对象线程安全的队列
-    # 这个方法解析出来的队列用于单节点下的一个进程使用的， 可以多读一点。而配置文件里的step， 是一个进程下每个线程在这个队列消费多少数据进行计算的数目。
     '''
     parse twitters start from specific start index and within specific step
     only parse out useful information as list of dicts
@@ -153,7 +138,9 @@ class TwitterJsonParser:
 
         return self.__twitter_queue
 
-
+    '''
+    Duplicate function from above that use standard python json lib
+    '''
     def parse_valid_coordinate_lang_maps_in_range_v2(self, start_index, step):
         upper_bound_index = self.__total_rows - 2
 
@@ -197,7 +184,6 @@ class TwitterJsonParser:
                         line = line.rstrip('}')
                         line = line.rstrip(']')
 
-
                     obj = json.loads(line)
                     coordinates = obj['doc']['coordinates']
                     lang_tag = obj['doc']['metadata']['iso_language_code']
@@ -218,18 +204,12 @@ class TwitterJsonParser:
                 logging.exception(e)
                 print("[ERROR] Index: ", index)
                 pass
-
-
-
-        # print("[DEBUG] is queue empty: ", self.__twitter_queue.empty())
         return self.__twitter_queue
 
 
-    # TODO 这是你可能会用到的实例方法，得到当前twitter文档的总行数
     def get_total_rows(self):
         return self.__total_rows
 
-    # TODO call it to free the twitter queue
     def free_twitter_queue(self):
         self.__twitter_queue = Queue()
 
@@ -238,7 +218,15 @@ class TwitterJsonParser:
 
     def test_parse_coordinates(self):
         pass
+    
+    '''
+    A test data generator that would result a Queue contain num records
 
+    Usage: q = test_queue_generator(num)
+
+    q : [{'coordinates': [x, y], 'lang_tag': 'en'},{...},{...}, ...] num records
+
+    '''
     def test_queue_generator(self, num):
         x_left = 150.7655
         x_right = 151.3655

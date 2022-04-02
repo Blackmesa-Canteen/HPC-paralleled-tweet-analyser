@@ -46,11 +46,6 @@ class ThreadPoolHandler(object):
             self._total_rows_per_process = total_rows_per_process
 
         self._thread_nums = ceil(self._total_rows_per_process / self._thread_step)
-
-        '''
-        TODO 在配置文件中加入单进程最大线程数量
-        PS: 线程数量过大可能会导致python解释器崩溃
-        '''
         self._thread_nums = 2000 if self._thread_nums > 2000 else self._thread_nums
         self._thread_pool = ThreadPoolExecutor(self._thread_nums)
         self._job_num = self._thread_nums

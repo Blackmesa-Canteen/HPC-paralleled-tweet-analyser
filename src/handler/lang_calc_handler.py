@@ -19,9 +19,12 @@ class LangCalcHandler:
         self._table = grid_parser.get_raw_table()
         self._grid_parser = grid_parser
         self._lang_parser = lang_parser
+    '''
+    Update per-thread table
 
-    def handle(self, message):
-                
+    table: 'A1':[num, set(), {}]
+    '''
+    def handle(self, message):            
         area = self._grid_parser.which_grid(tuple(message['coordinates']))
         lang = self._lang_parser.get_lang_by_tag_name(message['lang_tag'])
         record = self._table[area]
@@ -43,11 +46,16 @@ class LangCalcHandler:
     def result(self):
         return self._table
 
+    '''
+    Union all table from a table list
+
+    input: table_list [table1, table2, table3, ... ]
+    out: table {'A1':[num, (), {}], 'B1':[num, (), {}], .... }
+    '''
     @staticmethod
     def table_union(table_list, grid_parser):
         raw_table = grid_parser.get_raw_table()    
-        # table: {'A1':[num, (), {}], 'A1':[num, (), {}], .... }
-        # table_list: [table1, table2, table3, ... ]
+
         for table in table_list:
             for key in table.keys():
                 # update num
@@ -66,11 +74,6 @@ class LangCalcHandler:
                         raw_lang_dict[lang] += lang_dict[lang]
                     else:
                         raw_lang_dict[lang] = lang_dict[lang]
-        
-        # for key in raw_table.keys():
-        #     raw_table[key][1] = len(raw_table[key][1])
-        #     # add [:10] to get top 10
-        #     raw_table[key][2] = list(sorted(raw_table[key][2].items(), key=lambda x: x[1], reverse=True))
         return raw_table
 
     @staticmethod
@@ -80,10 +83,6 @@ class LangCalcHandler:
         # print("[INFO] Thread ", thread_id, " start job")
         main_queue, step, grid_parser, lang_tag_parser = args
         lang_calc_handler = LangCalcHandler(grid_parser, lang_tag_parser)
-
-        '''
-        这里可能存在并发问题 
-        '''
         records = 0
         while step != 0:
             if main_queue.empty():
@@ -94,12 +93,8 @@ class LangCalcHandler:
                     lang_calc_handler.handle(message)
                     records += 1
                 except Exception as e:
-                    # logging.exception(e)
-                    # print("[EX] {0} finish jobs: {1} records".format(thread_id, records))
                     return lang_calc_handler.result()
-                # print("{0} get message: {1} and current step: {2}".format(thread_id, message, step))
             step -= 1
-        # print("[INFO] {0} finish jobs: {1} records".format(thread_id, records))
         return lang_calc_handler.result()
 
     @staticmethod

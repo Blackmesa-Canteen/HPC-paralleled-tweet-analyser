@@ -22,11 +22,9 @@ class LangTagJsonParser:
             for obj in objects:
                 self.__tag_lang_map[obj['subtag']] = obj['name']
 
-    # TODO 这是根据 lang_tag 获得 语言全名的函数
     def get_lang_by_tag_name(self, tag_name):
         return self.__tag_lang_map[tag_name]
 
-    # TODO 这是获得所有 lang_tag, language全名的字典的函数
     # {en: English, zh-tw: Chinese, ...}
     def get_tag_lang_map(self):
         return self.__tag_lang_map
