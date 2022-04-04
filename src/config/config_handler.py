@@ -26,7 +26,7 @@ class ConfigHandler:
                 cfgs = yaml.safe_load(f)
 
                 self.__upper_bound_rows_per_iteration = cfgs['app']['upper-bound-rows-per-iteration']
-                if self.__upper_bound_rows_per_iteration < 0 or self.__upper_bound_rows_per_iteration > 1000000:
+                if self.__upper_bound_rows_per_iteration < 0 or self.__upper_bound_rows_per_iteration > 5000000:
                     print('[ERR] upper_bound_rows_per_iteration is error! too small or too big')
                     sys.exit(-1)
 
