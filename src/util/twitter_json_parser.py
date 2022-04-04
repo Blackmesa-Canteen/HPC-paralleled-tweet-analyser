@@ -202,8 +202,6 @@ class TwitterJsonParser:
                     index += 1
                 
             except Exception as e:
-                logging.exception(e)
-                print("[ERROR] Index: ", index)
                 pass
         return self.__twitter_queue
 
