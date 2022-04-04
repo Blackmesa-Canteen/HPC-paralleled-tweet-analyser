@@ -203,6 +203,7 @@ class TwitterJsonParser:
                 
             except Exception as e:
                 pass
+            
         return self.__twitter_queue
 
 
