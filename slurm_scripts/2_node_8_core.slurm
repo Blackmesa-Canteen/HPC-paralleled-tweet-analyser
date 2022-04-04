@@ -3,7 +3,7 @@
 #SBATCH --nodes=2
 #SBATCH --ntasks-per-node=4
 #SBATCH --output=R-%x.%j.out
-#SBATCH --error=R-%x.%j.err
+
 module purge
 
 module load foss/2020b
