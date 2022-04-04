@@ -13,6 +13,10 @@ pip3 install ijson --user
 pip3 install mpi4py --user
 pip3 install PyYAML --user
 
+<<<<<<< HEAD
 mpiexec -np 8 python3 ../src/main.py
 
 time mpirun 
+=======
+mpiexec python3 ../src/main.py
+>>>>>>> d9edaa5cbb1903b78698adf0d852b6d3b4a35a73

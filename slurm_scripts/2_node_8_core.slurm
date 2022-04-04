@@ -12,4 +12,4 @@ pip3 install ijson --user
 pip3 install mpi4py --user
 pip3 install PyYAML --user
 
-mpiexec -np 8 python3 ../src/main.py
+mpiexec python3 ../src/main.py
